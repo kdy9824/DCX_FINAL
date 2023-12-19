@@ -253,3 +253,26 @@ toggleBtns.forEach((toggleBtn) => {
         }
     });
 });
+
+function toggleModel(modelNumber) {
+    var toggleIcon = document.getElementById("toggle-icon-" + modelNumber);
+    if (toggleIcon.textContent === "stop") {
+      startModel(modelNumber);
+      toggleIcon.textContent = "play_arrow";
+    } else {
+      stopModel(modelNumber);
+      toggleIcon.textContent = "stop";
+    }
+  }
+  
+  function startModel(modelNumber) {
+    // 해당 모델에 대한 WebSocket 및 모델 실행 코드 작성
+    // 예: ws1.send("startModel1");
+    // 예: ws1.send("stopModel1");
+  }
+  
+  function stopModel(modelNumber) {
+    // 해당 모델에 대한 WebSocket 및 모델 중지 코드 작성
+    // 예: ws1.send("stopModel1");
+  }
+  

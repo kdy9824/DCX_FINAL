@@ -28,7 +28,8 @@
     </div>
 
     <script>
-      const webSocket = new WebSocket("ws://localhost:3001");
+      // local host가 아니라 나의 컴퓨터의 ip주소를 입력해줘야 한다 
+      const webSocket = new WebSocket("ws://172.30.1.88:3001");
 
       webSocket.onopen = function () {
         const chatArea = document.getElementById("chatBody");
@@ -96,6 +97,6 @@
 
     <!-- ../app.js -->
     <!-- 서버에 연결 -->
-    <script src="../client.js"></script>
+    <script src="../js/client.js"></script>
   </body>
 </html>
