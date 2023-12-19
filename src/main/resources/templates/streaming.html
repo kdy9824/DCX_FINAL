@@ -91,27 +91,31 @@
             <div class="videos">
               <div class="video">
                 <div class="video-item">
-                  <video id="videoInput1" style="display: none"></video>
-                  <canvas id="videoOutput1"></canvas>
+                  <img id="video-feed" src="http://localhost:5000/python" alt="Video Feed" />
+                  <!-- <video id="videoInput1" style="display: none"></video> -->
+                  <!-- <canvas id="videoOutput1"></canvas> -->
                 </div>
               </div>
               <div class="video">
                 <div class="video-item">
-                  <video id="videoInput2" style="display: none"></video>
-                  <canvas id="videoOutput2"></canvas>
+                  <img id="video-feed2" src="http://localhost:5000/python2" alt="Video Feed2">
+                  <!-- <video id="videoInput2" style="display: none"></video>
+                  <canvas id="videoOutput2"></canvas> -->
                 </div>
               </div>
 
               <div class="video">
                 <div class="video-item">
-                  <video id="videoInput3" style="display: none"></video>
-                  <canvas id="videoOutput3"></canvas>
+                  <img id="video-feed3" src="http://localhost:5000/python3"alt="Video Feed3"
+    />
+                  <!-- <video id="videoInput3" style="display: none"></video>
+                  <canvas id="videoOutput3"></canvas> -->
                 </div>
               </div>
               <div class="video">
                 <div class="video-item">
-                  <video id="videoInput4" style="display: none"></video>
-                  <canvas id="videoOutput4"></canvas>
+                  <img id="video-feed4" src="http://localhost:5000/python4" alt="Video Feed4">
+                  <!-- <canvas id="videoOutput4"></canvas> -->
                 </div>
               </div>
             </div>
@@ -181,8 +185,8 @@
     </div>
 
     <script>
-      var w = 620,
-        h = 440; // Adjust dimensions as needed
+      var w = 320,
+        h = 220; // Adjust dimensions as needed
       var url = "ws://localhost:3000";
 
       var ws1 = new WebSocket(url);
