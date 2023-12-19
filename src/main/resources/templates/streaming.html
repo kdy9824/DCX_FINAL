@@ -91,14 +91,17 @@
             <div class="videos">
               <div class="video">
                 <div class="video-item">
-                  <img id="video-feed" src="http://localhost:5000/python" alt="Video Feed" />
-                  <!-- <video id="videoInput1" style="display: none"></video> -->
-                  <!-- <canvas id="videoOutput1"></canvas> -->
+                  <img id="video-feed" src="http://localhost:5000/python" alt="CCTV1" />
+                  <!-- <button onclick="startStreamingButton()">Start Streaming</button>
+                  <button onclick="stopStreamingButton()">Stop Streaming</button> -->
+
+                  <!-- <video id="videoInput1" style="display: none"></video>
+                  <canvas id="videoOutput1"></canvas> -->
                 </div>
               </div>
               <div class="video">
                 <div class="video-item">
-                  <img id="video-feed2" src="http://localhost:5000/python2" alt="Video Feed2">
+                  <img id="video-feed2" src="http://localhost:5000/python2" alt="CCTV2"> 
                   <!-- <video id="videoInput2" style="display: none"></video>
                   <canvas id="videoOutput2"></canvas> -->
                 </div>
@@ -106,16 +109,16 @@
 
               <div class="video">
                 <div class="video-item">
-                  <img id="video-feed3" src="http://localhost:5000/python3"alt="Video Feed3"
-    />
+                  <img id="video-feed3" src="http://localhost:5000/python3" alt="CCTV3"/>
                   <!-- <video id="videoInput3" style="display: none"></video>
                   <canvas id="videoOutput3"></canvas> -->
                 </div>
               </div>
               <div class="video">
                 <div class="video-item">
-                  <img id="video-feed4" src="http://localhost:5000/python4" alt="Video Feed4">
-                  <!-- <canvas id="videoOutput4"></canvas> -->
+                  <img id="video-feed4" src="http://localhost:5000/python4" alt="CCTV4"/>
+                  <!-- <video id="videoInput4" style="display: none"></video>
+                  <canvas id="videoOutput4"></canvas> -->
                 </div>
               </div>
             </div>
@@ -188,17 +191,17 @@
       var w = 320,
         h = 220; // Adjust dimensions as needed
       var url = "ws://localhost:3000";
-
+    
       var ws1 = new WebSocket(url);
       var ws2 = new WebSocket(url);
       var ws3 = new WebSocket(url);
       var ws4 = new WebSocket(url);
-
+    
       var video1 = setupVideo("videoInput1", "videoOutput1");
       var video2 = setupVideo("videoInput2", "videoOutput2");
       var video3 = setupVideo("videoInput3", "videoOutput3");
       var video4 = setupVideo("videoInput4", "videoOutput4");
-
+    
       function setupVideo(videoId, canvasId) {
         navigator.getUserMedia =
           navigator.getUserMedia ||
@@ -208,33 +211,33 @@
         var video = document.getElementById(videoId);
         video.width = w;
         video.height = h;
-
+    
         function successCallback(stream) {
           video.srcObject = stream;
           video.play();
         }
-
+    
         function errorCallback(error) {
           console.log(error);
         }
-
+    
         navigator.getUserMedia(constraints, successCallback, errorCallback);
-
+    
         var canvas = document.getElementById(canvasId);
         canvas.width = w;
         canvas.height = h;
         var ctx = canvas.getContext("2d");
-
+    
         function processImage() {
           ctx.drawImage(video, 0, 0, w, h);
           setTimeout(processImage, 1);
         }
-
+    
         processImage();
-
+    
         return video;
       }
-
+    
       function startStreaming() {
         setInterval(function () {
           sendImage(ws1, "videoOutput1");
@@ -243,12 +246,36 @@
           sendImage(ws4, "videoOutput4");
         }, 30);
       }
-
+    
       function sendImage(ws, canvasId) {
         var canvas = document.getElementById(canvasId);
         var rawData = canvas.toDataURL("image/jpeg", 0.5);
         ws.send(rawData);
       }
+    
+      // function startStreamingButton() {
+      //   sendCommand("start");
+      // }
+    
+      // function stopStreamingButton() {
+      //   sendCommand("stop");
+      // }
+    
+      // function sendCommand(command) {
+      //   fetch(`http://localhost:5000/control?command=${command}`)
+      //     .then(response => {
+      //       if (!response.ok) {
+      //         throw new Error(`HTTP error! Status: ${response.status}`);
+      //       }
+      //       return response.json();
+      //     })
+      //     .then(data => {
+      //       console.log(data);
+      //     })
+      //     .catch(error => {
+      //       console.error("Error:", error);
+      //     });
+      // }
     </script>
 
     <script src="../js/main.js"></script>
