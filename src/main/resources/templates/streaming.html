@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE-edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Storage</title>
+    <!-- MATERIAL CON -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
+      rel="stylesheet"
+    />
+    <!-- STYLESHEET -->
+    <link rel="stylesheet" href="../css/storage.css" />
+  </head>
+  <body>
+    <div class="container">
+      <aside>
+        <div class="top">
+          <div class="logo">
+            <img src="../images/logo.png" />
+            <h2>PINY<span> Catch U</span></h2>
+          </div>
+          <div class="close" id="close-btn">
+            <span class="material-icons-sharp">close</span>
+          </div>
+        </div>
+
+        <div class="sidebar">
+          <a class="menu-item">
+            <span class="material-icons-sharp">grid_view</span>
+            <h3>Dashboard</h3>
+          </a>
+          <a class="menu-item">
+            <span class="material-icons-sharp">person_outline</span>
+            <h3>My page</h3>
+          </a>
+          <a class="menu-item active">
+            <span class="material-icons-sharp">videocam</span>
+            <h3>Video Streaming</h3>
+          </a>
+          <a class="menu-item">
+            <span class="material-icons-sharp">view_list</span>
+            <h3>Video List</h3>
+          </a>
+          <a class="menu-item">
+            <span class="material-icons-sharp">insights</span>
+            <h3>Analytics</h3>
+          </a>
+          <a class="menu-item">
+            <span class="material-icons-sharp">mail_outline</span>
+            <h3>Messages</h3>
+            <span class="message-count active">26</span>
+          </a>
+          <a>
+            <span class="material-icons-sharp">logout</span>
+            <h3>Logout</h3>
+          </a>
+        </div>
+      </aside>
+      <!-- ------------ MAIN ------------ -->
+      <main>
+        <!-- ------------ header ------------ -->
+        <div class="header-wrapper">
+          <div class="header-title">
+            <h1>Video Streaming</h1>
+          </div>
+          <div class="user-info">
+            <button id="menu-btn">
+              <span class="material-icons-sharp">menu</span>
+            </button>
+            <div class="theme-toggler">
+              <span class="material-icons-sharp active">light_mode</span>
+              <span class="material-icons-sharp">dark_mode</span>
+            </div>
+            <div class="profile">
+              <div class="info">
+                <p>Hey, <b>김철수</b></p>
+                <small class="text-muted">Admin</small>
+              </div>
+              <div class="profile-photo">
+                <img src="../images/profile2.jpg" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ------------ section ------------ -->
+        <section>
+          <div class="video-container">
+            <h2>실시간 CCTV 조회</h2>
+            <div class="videos">
+              <div class="video">
+                <div class="video-item">
+                  <video id="videoInput1" style="display: none"></video>
+                  <canvas id="videoOutput1"></canvas>
+                </div>
+              </div>
+              <div class="video">
+                <div class="video-item">
+                  <video id="videoInput2" style="display: none"></video>
+                  <canvas id="videoOutput2"></canvas>
+                </div>
+              </div>
+
+              <div class="video">
+                <div class="video-item">
+                  <video id="videoInput3" style="display: none"></video>
+                  <canvas id="videoOutput3"></canvas>
+                </div>
+              </div>
+              <div class="video">
+                <div class="video-item">
+                  <video id="videoInput4" style="display: none"></video>
+                  <canvas id="videoOutput4"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <button onclick="startStreaming()">Send</button>
+          </div>
+
+          <div class="camara-container">
+            <h2>탐지 ON/OFF</h2>
+            <div class="cameras">
+              <div class="camera">
+                <div class="camera-image">
+                  <img src="../images/1.png" />
+                </div>
+                <div class="camera-name">
+                  <p><b>1번 카메라</b></p>
+                  <div class="toggle-btn">
+                    <div class="icon">
+                      <span class="material-icons-sharp">stop</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="camera">
+                <div class="camera-image">
+                  <img src="../images/2.png" />
+                </div>
+                <div class="camera-name">
+                  <p><b>2번 카메라</b></p>
+                  <div class="toggle-btn">
+                    <div class="icon">
+                      <span class="material-icons-sharp">stop</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="camera">
+                <div class="camera-image">
+                  <img src="../images/3.png" />
+                </div>
+                <div class="camera-name">
+                  <p><b>3번 카메라</b></p>
+                  <div class="toggle-btn">
+                    <div class="icon">
+                      <span class="material-icons-sharp">stop</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="camera">
+                <div class="camera-image">
+                  <img src="../images/4.png" />
+                </div>
+                <div class="camera-name">
+                  <p><b>4번 카메라</b></p>
+                  <div class="toggle-btn">
+                    <div class="icon">
+                      <span class="material-icons-sharp">stop</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      var w = 620,
+        h = 440; // Adjust dimensions as needed
+      var url = "ws://localhost:3000";
+
+      var ws1 = new WebSocket(url);
+      var ws2 = new WebSocket(url);
+      var ws3 = new WebSocket(url);
+      var ws4 = new WebSocket(url);
+
+      var video1 = setupVideo("videoInput1", "videoOutput1");
+      var video2 = setupVideo("videoInput2", "videoOutput2");
+      var video3 = setupVideo("videoInput3", "videoOutput3");
+      var video4 = setupVideo("videoInput4", "videoOutput4");
+
+      function setupVideo(videoId, canvasId) {
+        navigator.getUserMedia =
+          navigator.getUserMedia ||
+          navigator.webkitGetUserMedia ||
+          navigator.mozGetUserMedia;
+        var constraints = { audio: false, video: true };
+        var video = document.getElementById(videoId);
+        video.width = w;
+        video.height = h;
+
+        function successCallback(stream) {
+          video.srcObject = stream;
+          video.play();
+        }
+
+        function errorCallback(error) {
+          console.log(error);
+        }
+
+        navigator.getUserMedia(constraints, successCallback, errorCallback);
+
+        var canvas = document.getElementById(canvasId);
+        canvas.width = w;
+        canvas.height = h;
+        var ctx = canvas.getContext("2d");
+
+        function processImage() {
+          ctx.drawImage(video, 0, 0, w, h);
+          setTimeout(processImage, 1);
+        }
+
+        processImage();
+
+        return video;
+      }
+
+      function startStreaming() {
+        setInterval(function () {
+          sendImage(ws1, "videoOutput1");
+          sendImage(ws2, "videoOutput2");
+          sendImage(ws3, "videoOutput3");
+          sendImage(ws4, "videoOutput4");
+        }, 30);
+      }
+
+      function sendImage(ws, canvasId) {
+        var canvas = document.getElementById(canvasId);
+        var rawData = canvas.toDataURL("image/jpeg", 0.5);
+        ws.send(rawData);
+      }
+    </script>
+
+    <script src="../js/main.js"></script>
+  </body>
+</html>

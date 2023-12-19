@@ -236,3 +236,20 @@ function autoLeftPad(num, digit) {
     }
     return num;
 }
+
+// cctv 실시간 on off
+const toggleBtns = document.querySelectorAll(".toggle-btn");
+
+toggleBtns.forEach((toggleBtn) => {
+    toggleBtn.addEventListener("click", () => {
+        toggleBtn.classList.toggle("active");
+
+        const lockIcon = toggleBtn.querySelector(".icon span");
+
+        if (toggleBtn.classList.contains("active")) {
+            lockIcon.textContent = "play_arrow";
+        } else {
+            lockIcon.textContent = "stop";
+        }
+    });
+});

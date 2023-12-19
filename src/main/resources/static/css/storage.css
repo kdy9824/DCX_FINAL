@@ -40,7 +40,7 @@
     margin: 0;
     padding: 0;
     outline: 0;
-    appearance: none;
+    /* appearance: none; */
     border: 0;
     text-decoration: none;
     list-style: none;
@@ -323,57 +323,122 @@ main {
     text-align: right;
 }
 
+.info {
+    font-size: 12px;
+}
 
-/* ===================== card container ===================== */
-.card-container {
+/* 비디오 스트리밍 영역 스타일 */
+section {
+    display: grid;
+    grid-template-columns: 1.8fr 0.6fr;
+    gap: 10px;
+    height: 90%
+}
+
+.video-container {
+    margin-top: 1rem;
+}
+
+.video-container h2 {
+    margin-bottom: 0.8rem;
+    margin-left: 1.2rem;
+}
+
+.video-container .videos {
     background: var(--color-white);
     padding: var(--card-padding);
-    border-radius: var(--border-radius-1);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--box-shadow);
+    transition: all 300ms ease;
+    height: 88%;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
 }
 
-.card-wrapper {
+.video-container .videos .video {
+    margin: 1rem;
+}
+
+/* 카메라 play,stop 스타일 */
+.camara-container {
+    margin-top: 1rem;
+}
+
+.camara-container h2 {
+    margin-bottom: 0.8rem;
+    margin-left: 1.2rem;
+}
+
+.camara-container .cameras {
+    background: var(--color-white);
+    padding: var(--card-padding);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--box-shadow);
+    transition: all 300ms ease;
+    height: 88%;
+}
+
+.camara-container .cameras .camera {
     display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
+    margin-top: 1.2rem;
+    justify-content: center;
 }
 
-.main-title {
-    color: var(--color-primary);
-    padding-bottom: 10px;
-    font-size: 15px;
-}
-
-.payment-card {
-    background: var(--color-danger);
+.camera-image {
+    width: 9rem;
+    height: 7rem;
     border-radius: var(--border-radius-2);
-    padding: 1.2rem;
-    /* width: 290px; */
-    height: 150px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: all 0.5s ease-in-out;
+    margin-right: 1.5rem;
+    overflow: hidden;
 }
 
-.payment-card:hover {
-    transform: translateY(-5px);
+.camera-name {
+    margin-top: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
 }
 
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+.toggle-btn {
+    position: relative;
+    height: 50%;
+    width: 100%;
+    background: #ddd;
+    border-radius: 100px;
+    margin-top: rem;
+    cursor: pointer;
+    transition: all 0.4s ease;
 }
 
-.amount {
-    display: flex;
-    flex-direction: column;
+.toggle-btn.active {
+    background: #7c2ae8d2;
 }
 
-.title {
-    font-size: 12px;
-    font-weight: 200;
+.toggle-btn .icon {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%) translateX(-40%);
+    height: 40px;
+    width: 40px;
+    font-size: 70px;
+    color: #999;
+    background-color: var(--color-white);
+    border-radius: 50%;
+    transition: all 0.4s ease;
+    cursor: pointer;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-btn.active .icon{
+    left: calc(40% + 15px);
+    color: #7c2ae8d2;
+}
+
+.toggle-btn .icon span{
+    position: absolute;
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
 }
 
 /* ===================== 최근 영상 증거물 기록 ===================== */
@@ -382,25 +447,32 @@ main .recent-video {
 }
 
 main .recent-video h2 {
-    margin-bottom: 0.8rem;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
 }
 
 main .recent-video table {
     background: var(--color-white);
     width: 100%;
+    height: 80%;
     border-radius: var(--card-border-radius);
     padding: var(--card-padding);
     text-align: center;
     box-shadow: var(--box-shadow);
     transition: all 300ms ease;
+    font-size: 14px;
 }
 
 main .recent-video table:hover {
     box-shadow: none;
 }
 
+main table thead th {
+    height: 2rem;
+}
+
 main table tbody td {
-    height: 2.8rem;
+    height: 0.8rem;
     border-bottom: 1px solid var(--color-light);
     color: var(--color-dark-varient);
 }
@@ -412,7 +484,7 @@ main table tbody tr:last-child td {
 main .recent-video a {
     text-align: center;
     display: block;
-    margin: 1rem auto;
+    margin: 0.8rem auto;
     color: var(--color-primary);
 }
 
@@ -575,3 +647,4 @@ main .recent-video a {
 
 }
 */
+

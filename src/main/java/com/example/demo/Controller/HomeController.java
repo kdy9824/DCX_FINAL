@@ -231,7 +231,7 @@ public class HomeController {
 
         member = (Member) session.getAttribute("loginMember");
         if (member != null) {
-            return "storage";
+            return "videotest";
         } else {
             return "redirect:/";
         }
@@ -242,7 +242,7 @@ public class HomeController {
 
         member = (Member) session.getAttribute("loginMember");
         if (member != null) {
-            return "storage";
+            return "videotest2";
         } else {
             return "redirect:/";
         }
@@ -253,10 +253,22 @@ public class HomeController {
 
         member = (Member) session.getAttribute("loginMember");
         if (member != null) {
-            return "storage";
+            return "videotest3";
         } else {
             return "redirect:/";
         }
+    }
+
+    @GetMapping(value = "/chat")
+    public String chat(Model model) {
+
+        return "chat2";
+    }
+
+    @GetMapping(value = "/video")
+    public String video(Model model) {
+
+        return "streaming";
     }
 
 }
