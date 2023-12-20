@@ -9,7 +9,7 @@ from datetime import datetime
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-model = YOLO("C:/Users/smhrd/Desktop/second_try.pt")
+model = YOLO("C:/Users/smhrd/Desktop/final_project_data/second_try.pt")
 formatted_filename = datetime.now().strftime("%Y-%m-%d_%H-%M")
 # Set detailed values for video recording
 fps = 1

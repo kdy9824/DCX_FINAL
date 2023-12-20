@@ -111,7 +111,8 @@ formatted_filename = datetime.now().strftime("%Y-%m-%d_%H-%M")
 fps = 30
 w = 640  # Update with your preferred width
 h = 480  # Update with your preferred height
-codec = cv2.VideoWriter_fourcc(*'DIVX')  # DIVX: default codec
+
+codec = cv2.VideoWriter_fourcc(*'H264')  # DIVX: default codec
 
 # Capture and recording status (set to False since we are not recording from the beginning)
 # global record
@@ -128,10 +129,10 @@ cnt_rec = 1
 def gen():
     formatted_filename = datetime.now().strftime("%Y-%m-%d_%H-%M")
 # Set detailed values for video recording
-    fps = 5
+    fps = 10
     w = 640  # Update with your preferred width
     h = 480  # Update with your preferred height
-    codec = cv2.VideoWriter_fourcc(*'DIVX')  # DIVX: default codec
+    codec = cv2.VideoWriter_fourcc(*'H264')   # DIVX: default codec
     global record, record_duration, cnt_rec
     # global record, cnt_rec  # Declare record and cnt_rec as global variables
     # Set detailed values for video recording
@@ -163,14 +164,14 @@ def gen():
 
             # 프레임 단위로 이미지 저장
             
-            image_filename = f'C:/Users/smhrd/Desktop/deeplearning/image_save/frame_{formatted_filename}.jpg'
+            image_filename = f'C:/Users/smhrd/Desktop/DCX_Fianl_Project-main/DCX_FINAL/src/main/resources/static/saved_images/frame_{formatted_filename}.jpg'
             cv2.imwrite(image_filename, frame)
 
             if not record:
                 record = True
                 record_start_time = time.time()
                 print(f"Start recording_{cnt_rec}th")
-                out = cv2.VideoWriter(f'C:/Users/smhrd/Desktop/deeplearning/video_save/record_file_{formatted_filename}_{cnt_rec}.avi', codec, fps, (w, h))
+                out = cv2.VideoWriter(f'C:/Users/smhrd/Desktop/DCX_Fianl_Project-main/DCX_FINAL/src/main/resources/static/videos/record_file_{formatted_filename}_{cnt_rec}.mp4', codec, fps, (w, h))
                 cnt_rec += 1
 
         # Check if recording time exceeds the specified duration

@@ -76,27 +76,27 @@ public class HomeController {
             session.setAttribute("video_storage", filename2);
 
             for (int i = 0; i < filenames.length; i++) {
-                    filename2[i] = DATA_DIRECTORY + filenames[i];
-                    int sucornot = mapper.savevid(memberId, filename2[i].substring(101, 117), filename2[i].substring(89));
-                    System.out.println(filename2[i].substring(101, 117));
-                    System.out.println(sucornot);
-                    // System.out.println(filename2[i]);
-                    if (sucornot > 0){
-                        System.out.println("데이터베이스 업데이트 성공!");
-                    }
+                filename2[i] = DATA_DIRECTORY + filenames[i];
+                int sucornot = mapper.savevid(memberId, filename2[i].substring(101, 117), filename2[i].substring(89));
+                System.out.println(filename2[i].substring(101, 117));
+                System.out.println(sucornot);
+                // System.out.println(filename2[i]);
+                if (sucornot > 0) {
+                    System.out.println("데이터베이스 업데이트 성공!");
+                }
 
             }
 
             List<Storage> result_storage = mapper.videoList(memberId);
-            if(result_storage == null) { // Uesr에 입력한 회원 정보가 없어 로그인에 실패
+            if (result_storage == null) { // Uesr에 입력한 회원 정보가 없어 로그인에 실패
                 System.out.println("데이터 베이스 불러오기 실패");
             }
             // System.out.println(result_storage);
             session.setAttribute("result_storage", result_storage);
             // return "loading_main";
-                
-                return "main";
-            }
+
+            return "main";
+        }
 
     }
 
@@ -265,5 +265,4 @@ public class HomeController {
 
         return "redirect:../videos/{videoFileName}";
     }
-}   
-
+}
