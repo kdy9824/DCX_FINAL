@@ -204,71 +204,27 @@ public class HomeController {
         }
     }
 
-    @GetMapping(value = "/videosender")
+    @GetMapping(value = "/chat")
+    public String chat(HttpSession session, Member member) {
+
+        member = (Member) session.getAttribute("loginMember");
+        if (member != null) {
+            return "chat2";
+        } else {
+            return "redirect:/";
+        }
+    }
+
+    @GetMapping(value = "/video")
     public String video(HttpSession session, Member member) {
 
         member = (Member) session.getAttribute("loginMember");
         if (member != null) {
-            return "videosender";
+            return "streaming";
         } else {
-            return "redirect:/";
+            return "redirect/";
         }
-    }
 
-    @GetMapping(value = "/videosender4")
-    public String video4(HttpSession session, Member member) {
-
-        member = (Member) session.getAttribute("loginMember");
-        if (member != null) {
-            return "videosender4";
-        } else {
-            return "redirect:/";
-        }
-    }
-
-    @GetMapping(value = "/videotest")
-    public String python(HttpSession session, Member member) {
-
-        member = (Member) session.getAttribute("loginMember");
-        if (member != null) {
-            return "videotest";
-        } else {
-            return "redirect:/";
-        }
-    }
-
-    @GetMapping(value = "/videotest2")
-    public String python2(HttpSession session, Member member) {
-
-        member = (Member) session.getAttribute("loginMember");
-        if (member != null) {
-            return "videotest2";
-        } else {
-            return "redirect:/";
-        }
-    }
-
-    @GetMapping(value = "/videotest3")
-    public String python3(HttpSession session, Member member) {
-
-        member = (Member) session.getAttribute("loginMember");
-        if (member != null) {
-            return "videotest3";
-        } else {
-            return "redirect:/";
-        }
-    }
-
-    @GetMapping(value = "/chat")
-    public String chat(Model model) {
-
-        return "chat2";
-    }
-
-    @GetMapping(value = "/video")
-    public String video(Model model) {
-
-        return "streaming";
     }
 
 }

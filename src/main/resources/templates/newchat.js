@@ -1,34 +1,3 @@
-// const express = require('express');
-// const ws = require('ws');
-
-// const app = express();
-
-// // Define a simple route
-// app.get('/', (req, res) => {
-//   res.send('Hello World!');
-// });
-
-// const httpServer = app.listen(3001, '0.0.0.0', (err) => {
-//   if (err) {
-//     console.error('Error starting server:', err);
-//   } else {
-//     console.log('Server is running on port 3001');
-//   }
-// });
-
-// const webSocketServer = new ws.Server({
-//   server: httpServer,
-// });
-
-// webSocketServer.on('connection', (ws, request) => {
-//   const ip = request.connection.remoteAddress;
-
-//   ws.on('message', (msg) => {
-//     console.log(`${msg} [${ip}]`);
-//     ws.send(`Server received: ${msg}`);
-//   });
-// });
-
 const express = require("express");
 const ws = require("ws");
 
