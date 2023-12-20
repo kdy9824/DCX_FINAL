@@ -11,21 +11,21 @@
       rel="stylesheet"
     />
     <!-- STYLESHEET -->
-    <link rel="stylesheet" href="../css/mypage.css" />
-  </head>
-  <body>
-    <div class="container">
-      <aside>
-        <div class="top">
-          <div class="logo">
-            <img src="./images/logo.png" />
-            <h2>PINY<span> Catch U</span></h2>
-          </div>
-          <div class="close" id="close-btn">
-            <span class="material-icons-sharp">close</span>
-          </div>
-        </div>
-
+    <link rel="stylesheet" href="../css/mypage.css">
+</head>
+<body>
+     <div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                    <img src="./images/logo.png">
+                    <h2>PINY<span class="danger"> Catch U</span></h2>
+                </div>
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">close</span>
+                </div>
+            </div>
+            
         <div class="sidebar">
           <a class="menu-item" href="main">
             <span class="material-icons-sharp">grid_view</span>
@@ -76,33 +76,58 @@
               <span class="material-icons-sharp active">light_mode</span>
               <span class="material-icons-sharp">dark_mode</span>
             </div>
-            <div class="profile">
-              <div class="info">
-                <p>Hey, <b>김철수</b></p>
-                <small class="text-muted">Admin</small>
-              </div>
-              <div class="profile-photo">
-                <img src="./images/profile2.jpg" alt="" />
-              </div>
+        </aside>
+        <!-- ------------ header ------------ -->
+        <main>
+            <div class="header-wrapper">
+                <div class="header-title">
+                    <h1>My Page</h1>
+                </div>
+                <div class="user-info">
+                    <button id="menu-btn">
+                        <span class="material-icons-sharp">menu</span>
+                    </button>
+                    <div class="theme-toggler">
+                        <span class="material-icons-sharp active">light_mode</span>
+                        <span class="material-icons-sharp">dark_mode</span>
+                    </div>
+                    <div class="profile">
+                        <div class="info">
+                            <p>Hey, <b th:text="${session.loginMember.id}"></b></p>
+                            <small class="text-muted" th:text="${session.loginMember.email}"></small>
+                        </div>
+                        <div class="profile-photo">
+                            <img src="./images/profile2.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-        <!-- ------------ main ------------ -->
-        <div class="imformation-update">
-          <h2 class="primary">회원정보 수정</h2>
-          <p>기본정보</p>
-          <table>
-            <tr>
-              <th>아이디</th>
-              <td><input type="text" name="pw" placeholder="user" /></td>
-            </tr>
-            <tr>
-              <th>비밀번호</th>
-              <td>
-                <input type="text" name="pw" placeholder="*************" />
-              </td>
-            </tr>
-
+            <!-- ------------ main ------------ -->
+            <div class="imformation-update">
+                <h2 class="primary">회원정보 수정</h2>
+                <p>기본정보</p>
+                <table>
+                    <tr>
+                        <th>아이디</th>
+                        <td><input type="text" name="pw" placeholder="ID" ></td>
+                    </tr>
+                    <tr>
+                        <th>비밀번호</th>
+                        <td><input type="text" name="pw" placeholder="*************"></td>
+                    <tr>
+                        <th>이메일</th>
+                        <td><input type="text" name="pw" placeholder="*******@gmail.com"></td>
+                    </tr>
+                </table>
+                <div class="btn">
+                    <button type="submit">제출하기</button>
+                    <button type="reset">다시하기</button>
+                </div>
+            </div>
+            
+            
+        </main>        
+     </div>
             <tr>
               <th>이메일</th>
               <td>
@@ -132,4 +157,3 @@
     <script src="../js/main.js"></script>
   </body>
 </html>
-<!-- 수현1차 -->
