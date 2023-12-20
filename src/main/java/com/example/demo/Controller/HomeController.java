@@ -118,7 +118,6 @@ public class HomeController {
             GoogleEmailService.sendEmail(to, subject, text);
 
             return "main";
-
         }
 
         return null;
@@ -136,7 +135,6 @@ public class HomeController {
         session.setAttribute("auth", auth_String);
 
         String to = email;
-
         if (domain.equals("@naver.com")) {
             NaverAuthenticationService.sendEmail(to + domain, "인증번호", "인증번호 " + auth_String + " 을(를) 입력하세요.");
 
@@ -224,7 +222,5 @@ public class HomeController {
         } else {
             return "redirect/";
         }
-
     }
-
 }
