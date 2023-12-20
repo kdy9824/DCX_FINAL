@@ -84,10 +84,10 @@ public class HomeController {
                 if (sucornot > 0) {
                     System.out.println("데이터베이스 업데이트 성공!");
                 }
-
             }
 
             List<Storage> result_storage = mapper.videoList(memberId);
+
             if (result_storage == null) { // Uesr에 입력한 회원 정보가 없어 로그인에 실패
                 System.out.println("데이터 베이스 불러오기 실패");
             }
