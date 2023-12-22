@@ -43,7 +43,7 @@
                 <a class="menu-item"  href="/storage">
                     <span class="material-icons-sharp">view_list</span>
                     <h3>Video List</h3>
-                    <span class="message-count active">26</span>
+                    <span class="message-count active" th:text="${session.countCheck}"></span>
                 </a>
                 <a class="menu-item">
                     <span class="material-icons-sharp">mail_outline</span>
@@ -79,16 +79,7 @@
                             <h3>실시간 CCTV</h3>
                             <h1>작동중</h1>
                         </div>
-                        <div class="progress">
-                            <svg>
-                                <circle cx="38" cy="38" r="36"></circle>
-                            </svg>
-                            <div class="number">
-                                <p>ON</p>
-                            </div>
-                        </div>
                     </div>
-                    <small class="text-muted">Last 24 Hours</small>
                 </div>
                 <!-- ------------ END OF SALES ------------ -->
                 <div class="expenses">
@@ -96,37 +87,19 @@
                     <div class="middle">
                         <div class="left">
                             <h3>확인 필요한 감지알림</h3>
-                            <h1>3 개</h1>
-                        </div>
-                        <div class="progress">
-                            <svg>
-                                <circle cx="38" cy="38" r="36"></circle>
-                            </svg>
-                            <div class="number">
-                                <p>62%</p>
-                            </div>
+                            <h1 id="countCheck" th:text="${session.countCheck}+' 건'"></h1>
                         </div>
                     </div>
-                    <small class="text-muted">Last 24 Hours</small>
                 </div>
                 <!-- ------------ END OF EXPENSES ------------ -->
                 <div class="income">
                     <span class="material-icons-sharp">bar_chart</span>
                     <div class="middle">
                         <div class="left">
-                            <h3>TODAY 총 적발건수</h3>
-                            <h1>89 건</h1>
-                        </div>
-                        <div class="progress">
-                            <svg>
-                                <circle cx="38" cy="38" r="36"></circle>
-                            </svg>
-                            <div class="number">
-                                <p>44%</p>
-                            </div>
+                            <h3 id="countSmokeDay">TODAY 총 적발건수</h3>
+                            <h1 id="countSmoke" th:text="${session.countSmoke}+' 건'"></h1>
                         </div>
                     </div>
-                    <small class="text-muted">Last 24 Hours</small>
                 </div>
                 <!-- ------------ END OF INCOME ------------ -->
             </div>
@@ -211,7 +184,7 @@
                     </div>
                 </div> -->
             </div>
-            <table class="scriptCalendar">
+            <!-- <table class="scriptCalendar">
                 <thead>
                     <tr>
                         <td class="calendarBtn" id="btnPrevCalendar">&#60;&#60;</td>
@@ -226,7 +199,38 @@
                     </tr>
                 </thead>
                 <tbody></tbody>
-            </table>
+            </table> -->
+            <div class="calendar-container">
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <span class="month-picker" id="month-picker">May </span>
+                        <div class="year-picker" id="year-picker">
+                            <span class="year-change" id="pre-year">
+                                <pre><</pre>
+                            </span>
+                            <span id="year">2023 </span>
+                            <span class="year-change" id="next-year">
+                                <pre>></pre>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="calender-body">
+                        <div class="calendar-week-days">
+                            <div>Sun</div>
+                            <div>Mon</div>
+                            <div>Tue</div>
+                            <div>Wed</div>
+                            <div>Thu</div>
+                            <div>Fri</div>
+                            <div>Sat</div>
+                        </div>
+                        <div class="calendar-days"></div>
+                    </div>
+                    <div class="calendar-footer"></div>
+                    <div class="month-list"></div>
+                </div>
+            </div>
         </div>
 
     <script src="../js/main.js"></script>

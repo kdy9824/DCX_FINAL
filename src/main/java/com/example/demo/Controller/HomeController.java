@@ -1,7 +1,10 @@
 package com.example.demo.Controller;
 // d
 import java.io.File;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -20,6 +24,7 @@ import com.example.demo.Entity.Member;
 import com.example.demo.Entity.Storage;
 import com.example.demo.Mapper.MemberMapper;
 import com.example.demo.java.GoogleEmailService;
+import com.example.demo.java.GoogleAuthenticationService;
 import com.example.demo.java.NaverAuthenticationService;
 import com.example.demo.java.NaverEmailService;
 
@@ -43,12 +48,32 @@ public class HomeController {
 
     @RequestMapping("/main")
     public String login(Member member, HttpSession session) {
+        
+        Member result = mapper.login(member);
 
         if (session.getAttribute("loginMember") != null) {
+
+            Member loginMember = (Member) session.getAttribute("loginMember");
+            String memberId = loginMember.getId(); // 로그인한 사용자의 Id를 memberId에 할당
+            String memberEmail = loginMember.getEmail();
+            session.setAttribute("memberEmail", memberEmail);
+
+            LocalDate today = LocalDate.now();
+        
+            // 날짜를 'yyyy-MM-dd' 형식의 문자열로 변환
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedDate = today.format(formatter);
+            String date1 = formattedDate+" 00:00:00";
+            String date2 = formattedDate+" 23:59:59";
+
+            int countSmoke = mapper.countSmoke(date1, date2, memberId);
+            session.setAttribute("countSmoke", countSmoke);
+
+            int countCheck = mapper.countCheck(memberId);
+            session.setAttribute("countCheck", countCheck);
+
             return "main";
         }
-
-        Member result = mapper.login(member);
 
         if (result == null) { // User에 입력한 회원 정보가 없어 로그인에 실패
             System.out.println("로그인 실패");
@@ -61,7 +86,205 @@ public class HomeController {
             System.out.println(memberId);
             System.out.println(loginMember.getEmail().substring(loginMember.getEmail().length() - 9));
 
-            String DATA_DIRECTORY = "C:/Users/smhrd/Desktop/DCX_Fianl_Project-main/DCX_FINAL/src/main/resources/static/videos/";
+            LocalDate today = LocalDate.now();
+        
+            // 날짜를 'yyyy-MM-dd' 형식의 문자열로 변환
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedDate = today.format(formatter);
+            String date1 = formattedDate+" 00:00:00";
+            String date2 = formattedDate+" 23:59:59";
+
+            int countSmoke = mapper.countSmoke(date1, date2, memberId);
+            session.setAttribute("countSmoke", countSmoke);
+
+            int countCheck = mapper.countCheck(memberId);
+            session.setAttribute("countCheck", countCheck);
+
+            return "main";
+        }
+
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+
+        session.invalidate(); // 세션에 저장된 정보를 날림(세션에 로그인한 계정 정보를 날림으로 로그아웃)
+
+        return "redirect:/";
+
+    }
+
+    @PostMapping("/join")
+    public String join(@ModelAttribute Member member, @RequestParam("domain_list") String domain_list) {
+
+        member.setEmail(member.getEmail()+domain_list);
+        System.out.println(member.getEmail());
+        String pw = member.getPw();
+        if (pw.equals("")) {
+            System.out.println("비밀번호 미입력");
+            return "redirect:/";
+        }
+
+        try {
+            mapper.join(member); // 입력한 회원 정보를 User 테이블에 삽입
+
+            System.out.println("회원가입 성공");
+            System.out.println(member.getId());
+            return "redirect:/";
+        } catch (DataIntegrityViolationException e) { // MySQL WorkBench에서는 PrimaryKey가 중복되어 User 테이블에 데이터를 삽입할 수 없으면
+                                                      // 에러가 떠서 예외처리를 하였음
+            System.out.println("회원가입 실패");
+            return "redirect:/"; // 회원가입에 실패하면 다시 회원가입 페이지로 이동
+        }
+
+    }
+
+    @PostMapping("/update")
+    public String update(Member member, HttpSession session) {
+
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        
+        String id = loginMember.getId();
+        String pw = member.getPw();
+        String email = member.getEmail();
+
+        System.out.println(id + pw + email);
+
+        int update=mapper.update(id, pw, email);
+
+        System.out.println(update);
+
+        return "mypage";
+
+    }
+
+    @RequestMapping("/withdraw")
+    public String withdraw(Member member, HttpSession session) {
+
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        
+        String id = loginMember.getId();
+        
+        mapper.withdraw(id);
+
+        return "redirect:/";
+
+    }
+    
+    // @PostMapping("/sendemail")
+    // public String sendEmail(HttpSession session) {
+
+    //     Member member = (Member) session.getAttribute("loginMember");
+    @PostMapping("/sendemail")
+    public String sendEmail(@RequestBody Map<String, String> requestData) {
+        String to = requestData.get("email");
+        String formattedFilename = requestData.get("formatted_filename");
+
+        if (to.substring(to.length() - 9).equals("naver.com")) {
+
+            NaverEmailService.sendEmail(to, formattedFilename + " 탐지", formattedFilename);
+            
+            return "streaming";
+
+        } else if (to.substring(to.length() - 9).equals("gmail.com")) {
+
+            GoogleEmailService.sendEmail(to, formattedFilename + " 탐지", formattedFilename);
+
+            return "streaming";
+        }
+
+        return null;
+
+    }
+
+    @PostMapping("/sendauthentication")
+    public String sendAuthentication(HttpSession session, @RequestParam("email") String email) {
+
+        Random rand = new Random();
+        int auth = rand.nextInt(900000) + 100000; // 0 <= auth < 10
+        String auth_String = Integer.toString(auth);
+        System.out.println(auth_String);
+        session.setAttribute("auth", auth_String);
+
+        System.out.println(email.substring(email.lastIndexOf("@") + 1));
+
+        if (email.substring(email.lastIndexOf("@") + 1).equals("naver.com")) {
+            NaverAuthenticationService.sendEmail(email, "인증번호", "인증번호 " + auth_String + " 을(를) 입력하세요.");
+
+            return "login";
+
+        } else if (email.substring(email.lastIndexOf("@") + 1).equals("gmail.com")) {
+
+            GoogleAuthenticationService.sendEmail(email, "인증번호", "인증번호 " + auth_String + " 을(를) 입력하세요.");
+
+            return "login";
+        }
+        return null;
+
+    }
+
+    @PostMapping("/checkauthentication")
+    public ResponseEntity<String> checkAuthentication(HttpSession session,
+            @RequestParam("authentication") String authentication) {
+        String auth = (String) session.getAttribute("auth");
+        if (auth != null && auth.equals(authentication)) {
+            return ResponseEntity.ok("인증이 완료되었습니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("불일치");
+        }
+    }
+
+    @PostMapping("/idcheck")
+    public ResponseEntity<String> idcheck(HttpSession session, @RequestParam("id") String id) {
+
+        int check = mapper.idCheck(id);
+
+        if (check == 0) {
+            return ResponseEntity.ok("사용 가능한 아이디입니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("중복된 아이디입니다.");
+        }
+
+    }
+
+    @PostMapping("/calendarchange")
+    public ResponseEntity<String> calendarChange(HttpSession session,
+            @RequestParam("checkdate") String checkdate) {
+        Member member = (Member)session.getAttribute("loginMember");
+        String memberId = member.getId();
+        System.out.println(checkdate);
+        String checkdate1 = checkdate+" 00:00:00";
+        String checkdate2 = checkdate+" 23:59:59";
+        
+        String countSmoke = Integer.toString(mapper.countSmoke(checkdate1, checkdate2, memberId));
+        String countChechCalendar = Integer.toString(mapper.countCheckCalendar(memberId, checkdate1, checkdate2));
+
+        return ResponseEntity.ok(countSmoke+' '+countChechCalendar);
+    }
+
+    // @PostMapping("/calendarchange")
+    // public String calendarChange(HttpSession session,
+    //         @RequestParam("checkdate") String checkdate) {
+    //     Member member = (Member)session.getAttribute("loginMember");
+    //     String memberId = member.getId();
+    //     System.out.println(checkdate);
+    //     String checkdate1 = checkdate+" 00:00:00";
+    //     String checkdate2 = checkdate+" 23:59:59";
+    //     mapper.countSmoke(checkdate1, checkdate2, memberId);
+    //     mapper.countCheckCalendar(memberId, checkdate1, checkdate2);
+        
+    //     return "main";
+    // }
+
+    @GetMapping(value = "/storage")
+    public String storage(HttpSession session, Member member) {
+
+        member = (Member) session.getAttribute("loginMember");
+        if (member != null) {
+
+            String memberId = member.getId(); // 로그인한 사용자의 Id를 memberId에 할당
+
+            String DATA_DIRECTORY = "C:/Users/smhrd/Desktop/DCX_Final_Project-main/DCX_FINAL/src/main/resources/static/videos/";
             File dir = new File(DATA_DIRECTORY);
 
             String[] filenames = dir.list();
@@ -95,124 +318,6 @@ public class HomeController {
             session.setAttribute("result_storage", result_storage);
             // return "loading_main";
 
-            return "main";
-        }
-
-    }
-
-    @GetMapping("/logout")
-    public String logout(HttpSession session) {
-
-        session.invalidate(); // 세션에 저장된 정보를 날림(세션에 로그인한 계정 정보를 날림으로 로그아웃)
-
-        return "redirect:/";
-
-    }
-
-    @PostMapping("/join")
-    public String join(@ModelAttribute Member member) {
-
-        String pw = member.getPw();
-        if (pw.equals("")) {
-            System.out.println("비밀번호 미입력");
-            return "redirect:/";
-        }
-
-        try {
-            mapper.join(member); // 입력한 회원 정보를 User 테이블에 삽입
-
-            System.out.println("회원가입 성공");
-            System.out.println(member.getId());
-            return "redirect:/";
-        } catch (DataIntegrityViolationException e) { // MySQL WorkBench에서는 PrimaryKey가 중복되어 User 테이블에 데이터를 삽입할 수 없으면
-                                                      // 에러가 떠서 예외처리를 하였음
-            System.out.println("회원가입 실패");
-            return "redirect:/"; // 회원가입에 실패하면 다시 회원가입 페이지로 이동
-        }
-
-    }
-
-    @PostMapping("/sendemail")
-    public String sendEmail(HttpSession session) {
-
-        Member member = (Member) session.getAttribute("loginMember");
-
-        String to = member.getEmail();
-        String subject = member.getId();
-        String text = member.getPw();
-
-        if (to.substring(to.length() - 9).equals("naver.com")) {
-
-            NaverEmailService.sendEmail(to, subject, text);
-
-            return "main";
-
-        } else if (to.substring(to.length() - 9).equals("gmail.com")) {
-
-            GoogleEmailService.sendEmail(to, subject, text);
-
-            return "main";
-        }
-
-        return null;
-
-    }
-
-    @PostMapping("/sendauthentication")
-    public String sendAuthentication(HttpSession session, @RequestParam("email") String email,
-            @RequestParam("domain") String domain) {
-
-        Random rand = new Random();
-        int auth = rand.nextInt(900000) + 100000; // 0 <= auth < 10
-        String auth_String = Integer.toString(auth);
-        System.out.println(auth_String);
-        session.setAttribute("auth", auth_String);
-
-        String to = email;
-        if (domain.equals("@naver.com")) {
-            NaverAuthenticationService.sendEmail(to + domain, "인증번호", "인증번호 " + auth_String + " 을(를) 입력하세요.");
-
-            return "login";
-
-        } else if (domain.equals("@gmail.com")) {
-
-            GoogleEmailService.sendEmail(to + domain, "인증번호", "인증번호 " + auth_String + " 을(를) 입력하세요.");
-
-            return "login";
-        }
-        return null;
-
-    }
-
-    @PostMapping("/checkauthentication")
-    public ResponseEntity<String> checkAuthentication(HttpSession session,
-            @RequestParam("authentication") String authentication) {
-        String auth = (String) session.getAttribute("auth");
-        if (auth != null && auth.equals(authentication)) {
-            return ResponseEntity.ok("인증이 완료되었습니다.");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("불일치");
-        }
-    }
-
-    @PostMapping("/idcheck")
-    public ResponseEntity<String> idcheck(HttpSession session, @RequestParam("id") String id) {
-
-        int check = mapper.idCheck(id);
-
-        if (check == 0) {
-            return ResponseEntity.ok("사용 가능한 아이디입니다.");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("중복된 아이디입니다.");
-        }
-
-    }
-
-    @GetMapping(value = "/storage")
-    public String storage(HttpSession session, Member member) {
-
-        member = (Member) session.getAttribute("loginMember");
-        if (member != null) {
             return "storage";
         } else {
             return "redirect:/";
@@ -252,6 +357,8 @@ public class HomeController {
 
         member = (Member) session.getAttribute("loginMember");
         if (member != null) {
+            System.out.println(member.getEmail());
+            System.out.println("/video에서는 null이 아님");
             return "streaming";
         } else {
             return "redirect/";
@@ -265,4 +372,5 @@ public class HomeController {
 
         return "redirect:../videos/{videoFileName}";
     }
+
 }

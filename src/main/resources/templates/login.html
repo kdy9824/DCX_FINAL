@@ -57,11 +57,11 @@
                     <div class="input-box">
                         <div id="email-box">
                             <span class="icon"><ion-icon name="mail"></ion-icon></span>
-                            <input type="email" name="email" id="email" required placeholder="이메일" autocomplete="off">
+                            <input type="text" name="email" id="email" required placeholder="이메일" autocomplete="off">
                             <span class="email-icon">@</span>
-                            <select class="box" id="domain_list">
+                            <select class="box" name="domain_list" id="domain_list">
                                 <option value="@naver.com">naver.com</option>
-                                <option value="@google.com">google.com</option>
+                                <option value="@gmail.com">gmail.com</option>
                             </select>
                             <button type="button" id="sendAuthenticationButton">인증번호 전송</button>
                         </div>
@@ -101,7 +101,7 @@
                     data: { id: userId },
 	                type: 'POST', // 전송 방식 (POST)
 	                success: function(response) {
-	                    alert('사용 가능한 아이디입니다. 아이디 변경 시 변경한 아이디에 대한 중복 확인을 다시 진행해주세요.');
+	                    alert('사용 가능한 아이디입니다.');
                         document.getElementById("register").classList.remove("disabledButton1");
 	                    // 성공 시 수행할 작업 추가
 	                },
@@ -116,16 +116,14 @@
 	    $(document).ready(function() {
 	        $('#sendAuthenticationButton').click(function(event) {
 	            //event.preventDefault(); // 버튼의 기본 동작 중지 (페이지 이동 방지)
-                var userEmail = document.getElementById('email').value;
-                var domainList = document.getElementById('domain_list').value;
-                console.log(domainList);
+                var userEmail = document.getElementById('email').value + document.getElementById('domain_list').value;
+                console.log(userEmail);
 	
 	            // AJAX 요청
 	            $.ajax({
 	                url: '/sendauthentication', // 이메일 전송을 처리하는 URL
                     data: {
                         email: userEmail,
-                        domain: domainList,
                     },
 	                type: 'POST', // 전송 방식 (POST)
 	                success: function(response) {

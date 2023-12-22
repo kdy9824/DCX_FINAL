@@ -25,4 +25,14 @@
 		SET confirmed = 1
 		WHERE video_path = #{video_path}
 	</update>
+
+	<update id="update" parameterType="com.example.demo.Entity.Member">update User set PW=#{pw}, Email=#{email} where ID=#{id}</update>
+
+	<delete id="withdraw" parameterType="String">delete from User where ID=#{id}</delete>
+
+	<select id="countSmoke" parameterType="String">select count(*) from Storage where RECORD_START &gt;= #{date1} AND RECORD_START &lt;= #{date2} AND ID=#{id}</select>
+
+	<select id="countCheck" parameterType="String">select count(*) from Storage where ID=#{id} and confirmed=0</select>
+
+	<select id="countCheckCalendar" parameterType="String">select count(*) from Storage where ID=#{id} and confirmed=0 and RECORD_START &gt;= #{date1} AND RECORD_START &lt;= #{date2}</select>
 </mapper>

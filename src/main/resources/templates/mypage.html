@@ -1,80 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE-edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Storage</title>
     <!-- MATERIAL CON -->
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     <!-- STYLESHEET -->
     <link rel="stylesheet" href="../css/mypage.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
      <div class="container">
         <aside>
             <div class="top">
                 <div class="logo">
-                    <img src="./images/logo.png">
-                    <h2>PINY<span class="danger"> Catch U</span></h2>
+                    <a href="/main"><img src="../images/logo.png">
+                    <h2>PINY<span class="danger"> Catch U</span></h2></a>
                 </div>
                 <div class="close" id="close-btn">
                     <span class="material-icons-sharp">close</span>
                 </div>
             </div>
-            
-        <div class="sidebar">
-          <a class="menu-item" href="main">
-            <span class="material-icons-sharp">grid_view</span>
-            <h3>Dashboard</h3>
-          </a>
-          <a class="menu-item active" href="/mypage">
-            <span class="material-icons-sharp">person_outline</span>
-            <h3>My page</h3>
-          </a>
-          <a class="menu-item" href="/videotest3">
-            <span class="material-icons-sharp">videocam</span>
-            <h3>Video Streaming</h3>
-          </a>
-          <a class="menu-item" href="/storage">
-            <span class="material-icons-sharp">view_list</span>
-            <h3>Video List</h3>
-            <span class="message-count active">26</span>
-          </a>
-          <a class="menu-item">
-            <span class="material-icons-sharp">mail_outline</span>
-            <h3>Messages</h3>
-          </a>
-          <a class="menu-item">
-            <span class="material-icons-sharp">insights</span>
-            <h3>Analytics</h3>
-          </a>
-          <a class="menu-item" href="/chat">
-            <span class="material-icons-sharp">chat</span>
-            <h3>chat</h3>
-          </a>
-          <a href="/logout">
-            <span class="material-icons-sharp">logout</span>
-            <h3>Logout</h3>
-          </a>
-        </div>
-      </aside>
-      <!-- ------------ header ------------ -->
-      <main>
-        <div class="header-wrapper">
-          <div class="header-title">
-            <h1>My Page</h1>
-          </div>
-          <div class="user-info">
-            <button id="menu-btn">
-              <span class="material-icons-sharp">menu</span>
-            </button>
-            <div class="theme-toggler">
-              <span class="material-icons-sharp active">light_mode</span>
-              <span class="material-icons-sharp">dark_mode</span>
+            <!-- ------------ sidebar ------------ -->
+            <div class="sidebar">
+                <a class="menu-item active" href="/main">
+                    <span class="material-icons-sharp">grid_view</span>
+                    <h3>Dashboard</h3>
+                </a>
+                <a class="menu-item" href="/mypage">
+                    <span class="material-icons-sharp">person_outline</span>
+                    <h3>My page</h3>
+                </a>
+                <a class="menu-item"  href="/video">
+                    <span class="material-icons-sharp">videocam</span>
+                    <h3>Video Streaming</h3>
+                </a>
+                <a class="menu-item"  href="/storage">
+                    <span class="material-icons-sharp">view_list</span>
+                    <h3>Video List</h3>
+                    <span class="message-count active">26</span>
+                </a>
+                <a class="menu-item">
+                    <span class="material-icons-sharp">insights</span>
+                    <h3>Analytics</h3>
+                </a>
+                <a class="menu-item" href="/chat">
+                  <span class="material-icons-sharp">chat</span>
+                  <h3>chat</h3>
+                </a>
+                <a href="/logout">
+                    <span class="material-icons-sharp">logout</span>
+                    <h3>Logout</h3>
+                </a>
             </div>
         </aside>
         <!-- ------------ header ------------ -->
@@ -83,7 +62,7 @@
                 <div class="header-title">
                     <h1>My Page</h1>
                 </div>
-                <div class="user-info">
+                <div class="top">
                     <button id="menu-btn">
                         <span class="material-icons-sharp">menu</span>
                     </button>
@@ -97,7 +76,7 @@
                             <small class="text-muted" th:text="${session.loginMember.email}"></small>
                         </div>
                         <div class="profile-photo">
-                            <img src="./images/profile2.jpg" alt="">
+                            <img src="../images/profile2.jpg" alt="">
                         </div>
                     </div>
                 </div>
@@ -106,55 +85,107 @@
             <div class="imformation-update">
                 <h2 class="primary">회원정보 수정</h2>
                 <p>기본정보</p>
-                <table>
+                <form action="/update" method="POST">
+                  <table>
                     <tr>
-                        <th>아이디</th>
-                        <td><input type="text" name="pw" placeholder="ID" ></td>
+                        <th style="width: 10%;">아이디</th>
+                        <td><input type="text" name="id" required autocomplete="off" disabled th:value="${session.loginMember.id}" placeholder="아이디"></td>
                     </tr>
                     <tr>
                         <th>비밀번호</th>
-                        <td><input type="text" name="pw" placeholder="*************"></td>
+                        <td><input type="password" name="pw" required th:value="${session.loginMember.pw}" placeholder="패스워드"></td>
                     <tr>
                         <th>이메일</th>
-                        <td><input type="text" name="pw" placeholder="*******@gmail.com"></td>
+                        <td><input type="email" name="email" id="email" required th:value="${session.loginMember.email}" placeholder="이메일" autocomplete="off">
+                          <button type="button" id="sendAuthenticationButton">인증번호 전송</button></td>
+                    </tr>
+                    <tr>
+                      <th>인증번호</th>
+                      <td>
+                        <input type="text" name="authentication" id="authentication" required placeholder="인증번호 입력" autocomplete="off">
+                        <button type="button" id="checkAuthenticationButton">인증번호 확인</button>
+                      </td>
                     </tr>
                 </table>
                 <div class="btn">
-                    <button type="submit">제출하기</button>
-                    <button type="reset">다시하기</button>
+                    <button type="submit" id="register">회원정보 수정</button>
+                    <button type="reset">이건 뺍시다</button>
                 </div>
+                </form>
+                
             </div>
             
             
-        </main>        
+        </main>
+        
+            
      </div>
-            <tr>
-              <th>이메일</th>
-              <td>
-                <input type="text" name="pw" placeholder="*******@gamil.com" />
-              </td>
-            </tr>
-            <tr>
-              <th>수신 동의</th>
-              <td><input type="radio" name="alram" value="email" />이메일</td>
-            </tr>
-            <tr>
-              <th>개인정보 수집 및 이용안내</th>
-              <td>
-                <input type="radio" name="information" value="accept" />동의
-                <input type="radio" name="information" value="reject" />비동의
-              </td>
-            </tr>
-          </table>
-          <div class="btn">
-            <button type="submit">제출하기</button>
-            <button type="reset">다시하기</button>
-          </div>
-        </div>
-      </main>
-    </div>
 
-    <script src="../js/main.js"></script>
-  </body>
+     <script src="../js/main.js"></script>
+     <script>
+      document.getElementById("register").disabled = true;
+      document.getElementById("register").classList.add("disabledButton1");
+
+      $(document).ready(function() {
+          $('#sendAuthenticationButton').click(function(event) {
+              //event.preventDefault(); // 버튼의 기본 동작 중지 (페이지 이동 방지)
+                var userEmail = document.getElementById('email').value;
+
+              // AJAX 요청
+              $.ajax({
+                  url: '/sendauthentication', // 이메일 전송을 처리하는 URL
+                    data: {
+                        email: userEmail,
+                    },
+                  type: 'POST', // 전송 방식 (POST)
+                  success: function(response) {
+                      alert('인증번호를 발송했습니다.');
+                      // 성공 시 수행할 작업 추가
+                  },
+                  error: function(xhr, status, error) {
+                      alert('인증번호 발송 실패');
+                      // 실패 시 수행할 작업 추가
+                  }
+              });
+          });
+      });
+
+      $(document).ready(function() {
+          $('#checkAuthenticationButton').click(function(event) {
+              //event.preventDefault(); // 버튼의 기본 동작 중지 (페이지 이동 방지)
+                var userAuthentication = document.getElementById('authentication').value;
+
+              // AJAX 요청
+              $.ajax({
+                  url: '/checkauthentication', // 인증번호를 비교하는 URL
+                    data: { authentication: userAuthentication },
+                  type: 'POST', // 전송 방식 (POST)
+                  success: function(response) {
+                      alert(response);
+                      document.getElementById("register").classList.remove("disabledButton1");
+                      // 성공 시 수행할 작업 추가
+                  },
+                  error: function(xhr, status, error) {
+                      alert('인증번호를 다시 확인하세요.');
+                      // 실패 시 수행할 작업 추가
+                  }
+              });
+          });
+      });
+        
+        // disabled 속성을 변경하는 함수
+        function toggleDisabled() {
+            if (!document.getElementById("register").classList.contains("disabledButton1")) {
+                document.getElementById("register").disabled = false; // 인증 절차 통과 시 회원정보 수정 가능
+            } else {
+                document.getElementById("register").disabled = true; // 인증하지 않으면 회원정보 수정 불가능
+            }
+        }
+
+        // 일정 시간마다 클래스 확인하여 속성 변경
+        setInterval(toggleDisabled, 1); // 0.001초마다 요소의 클래스 확인
+
+  </script>
+</body>
 </html>
-
+<!-- 수현 -->\

@@ -285,13 +285,13 @@ select.box {
     opacity: 0.5; /* 투명도 조정 */
     cursor: not-allowed; /* 커서 변경 */
     /* 추가적인 스타일링 등 */
-}
+    }
 
-.disabledButton2 { /* 인증번호 체크 */
-    opacity: 0.5; /* 투명도 조정 */
-    cursor: not-allowed; /* 커서 변경 */
-    /* 추가적인 스타일링 등 */
-}
+    .disabledButton2 { /* 인증번호 체크 */
+        opacity: 0.5; /* 투명도 조정 */
+        cursor: not-allowed; /* 커서 변경 */
+        /* 추가적인 스타일링 등 */
+    }
 
 .btn {
     width: 100%;

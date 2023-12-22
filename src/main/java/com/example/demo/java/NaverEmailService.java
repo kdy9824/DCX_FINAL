@@ -46,7 +46,7 @@ public class NaverEmailService {
 
             // 이미지 첨부
             MimeBodyPart imagePart = new MimeBodyPart();
-            String imagePath = "C:/Users/smhrd/Desktop/test.png"; // 이미지 경로 지정
+            String imagePath = "C:/Users/smhrd/Desktop/DCX_Final_Project-main/DCX_FINAL/src/main/resources/static/saved_images/frame_1.jpg"; // 이미지 경로 지정
             DataSource fds = new FileDataSource(imagePath);
             imagePart.setDataHandler(new DataHandler(fds));
             imagePart.setHeader("Content-ID", "<image>");

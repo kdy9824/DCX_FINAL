@@ -22,4 +22,14 @@ public interface MemberMapper {
 
 	public int updateConfirmed(String video_path);
 
+	public int update(String id, String pw, String email);
+
+	public int withdraw(String id);
+
+	public int countSmoke(String date1, String date2, String id);
+
+	public int countCheck(String id);
+
+	public int countCheckCalendar(String id, String date1, String date2);
+
 }

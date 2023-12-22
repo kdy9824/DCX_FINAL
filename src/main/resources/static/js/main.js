@@ -40,7 +40,6 @@ themeToggler.addEventListener('click', ()=> {
 
 
     document.addEventListener("DOMContentLoaded", function() {
-        buildCalendar();
         
         document.getElementById("btnPrevCalendar").addEventListener("click", function(event) {
             prevCalendar();
@@ -51,228 +50,226 @@ themeToggler.addEventListener('click', ()=> {
         });
     });
 
-
 // Calendar
-var toDay = new Date(); // @param 전역 변수, 오늘 날짜 / 내 컴퓨터 로컬을 기준으로 toDay에 Date 객체를 넣어줌
-var nowDate = new Date();  // @param 전역 변수, 실제 오늘날짜 고정값
+let calendarDays = document.querySelector('.calendar-days');
 
-/**
- * @brief   이전달 버튼 클릭시
- */
-function prevCalendar() {
-    this.toDay = new Date(toDay.getFullYear(), toDay.getMonth() - 1, toDay.getDate());
-    buildCalendar();    // @param 전월 캘린더 출력 요청
-}
+calendarDays.addEventListener('click', function(event) {
+    // 현재 노란색으로 변경된 요소 찾기
+    let yellowElements = document.querySelectorAll('.yellow-bg');
 
-/**
- * @brief   다음달 버튼 클릭시
- */
-function nextCalendar() {
-    this.toDay = new Date(toDay.getFullYear(), toDay.getMonth() + 1, toDay.getDate());
-    buildCalendar();    // @param 명월 캘린더 출력 요청
-}
+    // 기존 노란색 요소가 있으면 원래 색상으로 변경
+    yellowElements.forEach(element => {
+        element.classList.remove('yellow-bg');
+    });
 
-/**
- * @brief   캘린더 오픈
- * @details 날짜 값을 받아 캘린더 폼을 생성하고, 날짜값을 채워넣는다.
- */
-function buildCalendar() {
+    // 현재 클릭한 요소를 노란색으로 변경
+    event.target.classList.add('yellow-bg');
 
-    let doMonth = new Date(toDay.getFullYear(), toDay.getMonth(), 1);
-    let lastDate = new Date(toDay.getFullYear(), toDay.getMonth() + 1, 0);
+    // 클릭한 요소의 값을 콘솔에 출력
+    var year = document.getElementById('year').innerText;
+    var month = document.getElementById('month-picker').innerText;
 
-    let tbCalendar = document.querySelector(".scriptCalendar > tbody");
+    if(month == 'January'){var m = '01';}
+    if(month == 'February'){var m = '02';}
+    if(month == 'March'){var m = '03';}
+    if(month == 'April'){var m = '04';}
+    if(month == 'May'){var m = '05';}
+    if(month == 'June'){var m = '06';}
+    if(month == 'July'){var m = '07';}
+    if(month == 'August'){var m = '08';}
+    if(month == 'September'){var m = '09';}
+    if(month == 'October'){var m = '10';}
+    if(month == 'November'){var m = '11';}
+    if(month == 'December'){var m = '12';}
 
-    document.getElementById("calYear").innerText = toDay.getFullYear();                       // @param YYYY월
-    document.getElementById("calMonth").innerText = autoLeftPad((toDay.getMonth() + 1), 2);   // @param MM월
+    // 일의 자리 정수를 두 자리로 표시하는 함수
+    function formatNumber(number) {
+        return number < 10 ? `0${number}` : `${number}`;
+    }
     
+    var date = year+'-'+m+'-'+formatNumber(parseInt(event.target.textContent));
 
-    // @details 이전 캘린더의 출력결과가 남아있다면, 이전 캘린더를 삭제한다.
-    while(tbCalendar.rows.length > 0) {
-        tbCalendar.deleteRow(tbCalendar.rows.length - 1);
-    }
-
-    // @param 첫번째 개행
-    let row = tbCalendar.insertRow();
-
-    // @param 날짜가 표기될 열의 증가값
-    let dom = 1;
-
-    // @details 시작일의 요일값( doMonth.getDay() ) + 해당월의 전체일( lastDate.getDate())을  더해준 값에서
-    //               7로 나눈값을 올림( Math.ceil() )하고 다시 시작일의 요일값( doMonth.getDay() )을 빼준다.
-    let daysLength = (Math.ceil((doMonth.getDay() + lastDate.getDate()) / 7) * 7) - doMonth.getDay();
-
-    // @param 달력 출력
-    // @details 시작값은 1일을 직접 지정하고 요일값( doMonth.getDay() )를 빼서 마이너스( - )로 for문을 시작한다.
-    for(let day = 1 - doMonth.getDay(); daysLength >= day; day++) {
-
-        let column = row.insertCell();
-
-        // @param 평일( 전월일과 익월일의 데이터 제외 )
-        if(Math.sign(day) == 1 && lastDate.getDate() >= day) {
-
-            // @param 평일 날짜 데이터 삽입
-            column.innerText = autoLeftPad(day, 2);
-
-            // @param 일요일인 경우
-            if(dom % 7 == 1) {
-                column.style.color = "#FF4D4D";
-            }
-
-            // @param 토요일인 경우
-            if(dom % 7 == 0) {
-                column.style.color = "#4D4DFF";
-                row = tbCalendar.insertRow();   // @param 토요일이 지나면 다시 가로 행을 한줄 추가한다.
-            }
-
-        }
-
-        // @param 평일 전월일과 익월일의 데이터 날짜변경
-        else {
-            let exceptDay = new Date(doMonth.getFullYear(), doMonth.getMonth(), day);
-            column.innerText = autoLeftPad(exceptDay.getDate(), 2);
-            column.style.color = "#A9A9A9";
-        }
-
-        // @brief   전월, 명월 음영처리
-        // @details 현재년과 선택 년도가 같은경우
-        if(toDay.getFullYear() == nowDate.getFullYear()) {
-
-            // @details 현재월과 선택월이 같은경우
-            if(toDay.getMonth() == nowDate.getMonth()) {
-
-                // @details 현재일보다 이전인 경우이면서 현재월에 포함되는 일인경우
-                if(nowDate.getDate() > day && Math.sign(day) == 1) {
-                    column.style.backgroundColor = "#E5E5E5";
-                }
-
-                // @details 현재일보다 이후이면서 현재월에 포함되는 일인경우
-                else if(nowDate.getDate() < day && lastDate.getDate() >= day) {
-                    column.style.backgroundColor = "#FFFFFF";
-                    column.style.cursor = "pointer";
-                    column.onclick = function(){ calendarChoiceDay(this); }
-                }
-
-                // @details 현재일인 경우
-                else if(nowDate.getDate() == day) {
-                    column.style.backgroundColor = "#FFFFE6";
-                    column.style.cursor = "pointer";
-                    column.onclick = function(){ calendarChoiceDay(this); }
-                }
-
-            // @details 현재월보다 이전인경우
-            } else if(toDay.getMonth() < nowDate.getMonth()) {
-                if(Math.sign(day) == 1 && day <= lastDate.getDate()) {
-                    column.style.backgroundColor = "#E5E5E5";
-                }
-            }
-
-            // @details 현재월보다 이후인경우
-            else {
-                if(Math.sign(day) == 1 && day <= lastDate.getDate()) {
-                    column.style.backgroundColor = "#FFFFFF";
-                    column.style.cursor = "pointer";
-                    column.onclick = function(){ calendarChoiceDay(this); }
-                }
-            }
-        }
-
-        // @details 선택한년도가 현재년도보다 작은경우
-        else if(toDay.getFullYear() < nowDate.getFullYear()) {
-            if(Math.sign(day) == 1 && day <= lastDate.getDate()) {
-                column.style.backgroundColor = "#E5E5E5";
-            }
-        }
-
-        // @details 선택한년도가 현재년도보다 큰경우
-        else {
-            if(Math.sign(day) == 1 && day <= lastDate.getDate()) {
-                column.style.backgroundColor = "#FFFFFF";
-                column.style.cursor = "pointer";
-                column.onclick = function(){ calendarChoiceDay(this); }
-            }
-        }
-        dom++;
-    }
-}
-
-/**
- * @brief   날짜 선택
- * @details 사용자가 선택한 날짜에 체크표시를 남긴다.
- */
-function calendarChoiceDay(column) {
-
-    // @param 기존 선택일이 존재하는 경우 기존 선택일의 표시형식을 초기화 한다.
-    if(document.getElementsByClassName("choiceDay")[0]) {
-        
-        // @see 금일인 경우
-        if(document.getElementById("calMonth").innerText == autoLeftPad((nowDate.getMonth() + 1), 2) && document.getElementsByClassName("choiceDay")[0].innerText == autoLeftPad(toDay.getDate(), 2)) {
-            document.getElementsByClassName("choiceDay")[0].style.backgroundColor = "#FFFFE6";
-        }
-        
-        // @see 금일이 아닌 경우
-        else {
-            document.getElementsByClassName("choiceDay")[0].style.backgroundColor = "#FFFFFF";
-        }
-        document.getElementsByClassName("choiceDay")[0].classList.remove("choiceDay");
-    }
-
-    // @param 선택일 체크 표시
-    column.style.backgroundColor = "#FF9999";
-
-    // @param 선택일 클래스명 변경
-    column.classList.add("choiceDay");
-}
-
-/**
- * @brief   숫자 두자릿수( 00 ) 변경
- * @details 자릿수가 한자리인 ( 1, 2, 3등 )의 값을 10, 11, 12등과 같은 두자리수 형식으로 맞추기위해 0을 붙인다.
- * @param   num     앞에 0을 붙일 숫자 값
- * @param   digit   글자의 자릿수를 지정 ( 2자릿수인 경우 00, 3자릿수인 경우 000 … )
- */
-function autoLeftPad(num, digit) {
-    if(String(num).length < digit) {
-        num = new Array(digit - String(num).length + 1).join("0") + num;
-    }
-    return num;
-}
-
-// cctv 실시간 on off
-const toggleBtns = document.querySelectorAll(".toggle-btn");
-
-toggleBtns.forEach((toggleBtn) => {
-    toggleBtn.addEventListener("click", () => {
-        toggleBtn.classList.toggle("active");
-
-        const lockIcon = toggleBtn.querySelector(".icon span");
-
-        if (toggleBtn.classList.contains("active")) {
-            lockIcon.textContent = "play_arrow";
-        } else {
-            lockIcon.textContent = "stop";
+    console.log(date);
+    
+    // AJAX 요청
+    $.ajax({
+        url: '/calendarchange',
+        type: 'POST',
+        data: { checkdate: date },
+        success: function(response) {
+            const responseData = response.split(' '); // 응답값을 공백으로 분리
+            const countSmoke = responseData[0] +' 건';
+            const countCheckCalendar = responseData[1] +' 건';
+    
+            const countSmokeElement = document.getElementById('countSmoke');
+            const countSmokeDayElement = document.getElementById('countSmokeDay');
+            const countCheckCalendarElement = document.getElementById('countCheck');
+    
+            countSmokeDayElement.textContent = date+' 총 적발 건수';
+            countSmokeElement.textContent = countSmoke;
+            countCheckCalendarElement.textContent = countCheckCalendar;
+        },
+        error: function(xhr, status, error) {
+            // alert('달력 로드 불가');
         }
     });
-});
+    
 
-function toggleModel(modelNumber) {
-    var toggleIcon = document.getElementById("toggle-icon-" + modelNumber);
-    if (toggleIcon.textContent === "stop") {
-      startModel(modelNumber);
-      toggleIcon.textContent = "play_arrow";
-    } else {
-      stopModel(modelNumber);
-      toggleIcon.textContent = "stop";
+    });
+
+
+const isLeapYear = (year) => {
+    return (
+      (year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) ||
+      (year % 100 === 0 && year % 400 === 0)
+    );
+  };
+  const getFebDays = (year) => {
+    return isLeapYear(year) ? 29 : 28;
+  };
+  let calendar = document.querySelector('.calendar');
+  const month_names = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  let month_picker = document.querySelector('#month-picker');
+  const dayTextFormate = document.querySelector('.day-text-formate');
+  const timeFormate = document.querySelector('.time-formate');
+  const dateFormate = document.querySelector('.date-formate');
+  
+  month_picker.onclick = () => {
+    month_list.classList.remove('hideonce');
+    month_list.classList.remove('hide');
+    month_list.classList.add('show');
+    dayTextFormate.classList.remove('showtime');
+    dayTextFormate.classList.add('hidetime');
+    timeFormate.classList.remove('showtime');
+    timeFormate.classList.add('hideTime');
+    dateFormate.classList.remove('showtime');
+    dateFormate.classList.add('hideTime');
+  };
+  
+  const generateCalendar = (month, year) => {
+    let calendar_days = document.querySelector('.calendar-days');
+    calendar_days.innerHTML = '';
+    let calendar_header_year = document.querySelector('#year');
+    let days_of_month = [
+      31,
+      getFebDays(year),
+      31,
+      30,
+      31,
+      30,
+      31,
+      31,
+      30,
+      31,
+      30,
+      31,
+    ];  
+    
+    let currentDate = new Date();
+    
+    month_picker.innerHTML = month_names[month];
+    
+    calendar_header_year.innerHTML = year;
+    
+    let first_day = new Date(year, month);
+  
+  
+  for (let i = 0; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
+  
+      let day = document.createElement('div');
+  
+      if (i >= first_day.getDay()) {
+        day.innerHTML = i - first_day.getDay() + 1;
+
+        if (i - first_day.getDay() + 1 === currentDate.getDate() &&
+          year === currentDate.getFullYear() &&
+          month === currentDate.getMonth()
+        ) {
+          day.classList.add('current-date');
+        }
+      }
+      calendar_days.appendChild(day);
     }
-  }
+  };
   
-  function startModel(modelNumber) {
-    // 해당 모델에 대한 WebSocket 및 모델 실행 코드 작성
-    // 예: ws1.send("startModel1");
-    // 예: ws1.send("stopModel1");
-  }
+  let month_list = calendar.querySelector('.month-list');
+  month_names.forEach((e, index) => {
+    let month = document.createElement('div');
+    month.innerHTML = `<div>${e}</div>`;
   
-  function stopModel(modelNumber) {
-    // 해당 모델에 대한 WebSocket 및 모델 중지 코드 작성
-    // 예: ws1.send("stopModel1");
-  }
+    month_list.append(month);
+    month.onclick = () => {
+      currentMonth.value = index;
+      generateCalendar(currentMonth.value, currentYear.value);
+      month_list.classList.replace('show', 'hide');
+      dayTextFormate.classList.remove('hideTime');
+      dayTextFormate.classList.add('showtime');
+      timeFormate.classList.remove('hideTime');
+      timeFormate.classList.add('showtime');
+      dateFormate.classList.remove('hideTime');
+      dateFormate.classList.add('showtime');
+    };
+  });
   
+  (function () {
+    month_list.classList.add('hideonce');
+  })();
+  document.querySelector('#pre-year').onclick = () => {
+    --currentYear.value;
+    generateCalendar(currentMonth.value, currentYear.value);
+  };
+  document.querySelector('#next-year').onclick = () => {
+    ++currentYear.value;
+    generateCalendar(currentMonth.value, currentYear.value);
+  };
+  
+  let currentDate = new Date();
+  let currentMonth = { value: currentDate.getMonth() };
+  let currentYear = { value: currentDate.getFullYear() };
+  generateCalendar(currentMonth.value, currentYear.value);
+
+  const todayShowTime = document.querySelector('.time-formate');
+  const todayShowDate = document.querySelector('.date-formate');
+  
+  const currshowDate = new Date();
+  const showCurrentDateOption = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long',
+  };
+  const currentDateFormate = new Intl.DateTimeFormat(
+    'en-US',
+    showCurrentDateOption
+  ).format(currshowDate);
+  todayShowDate.textContent = currentDateFormate;
+  setInterval(() => {
+    const timer = new Date();
+    const option = {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+    };
+    const formateTimer = new Intl.DateTimeFormat('en-us', option).format(timer);
+    let time = `${`${timer.getHours()}`.padStart(
+      2,
+      '0'
+    )}:${`${timer.getMinutes()}`.padStart(
+      2,
+      '0'
+    )}: ${`${timer.getSeconds()}`.padStart(2, '0')}`;
+    todayShowTime.textContent = formateTimer;
+  }, 1000);

@@ -75,8 +75,8 @@
             </div>
             <div class="profile">
               <div class="info">
-                <p>Hey, <b>김철수</b></p>
-                <small class="text-muted">Admin</small>
+                <p>Hey, <b th:text="${session.loginMember.id}"></b></p>
+                <small class="text-muted" th:text="${session.loginMember.email}"></small>
               </div>
               <div class="profile-photo">
                 <img src="../images/profile2.jpg" alt="" />
@@ -119,18 +119,18 @@
                 <div class="video-item">
                   <img
                     id="video-feed3"
-                    src="http://172.30.1.49:5000/python3"
+                    src="http://172.30.1.49:5000/python4"
                     alt="CCTV3"
-                  />
+                  />  
                   <!-- <video id="videoInput3" style="display: none"></video>
                   <canvas id="videoOutput3"></canvas> -->
                 </div>
               </div>
               <div class="video">
                 <div class="video-item">
-                  <!-- <img id="video-feed4" src="http://localhost:5000/python4" alt="CCTV4"/> -->
-                  <!-- <video id="videoInput4" style="display: none"></video>
-                  <canvas id="videoOutput4"></canvas> -->
+                  <img id="video-feed4" src="http://localhost:5000/python4" alt="CCTV4"/>
+                  <video id="videoInput4" style="display: none"></video>
+                  <canvas id="videoOutput4"></canvas>
                 </div>
               </div>
             </div>
