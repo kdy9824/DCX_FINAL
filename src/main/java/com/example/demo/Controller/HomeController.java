@@ -1,6 +1,7 @@
 package com.example.demo.Controller;
 // d
 import java.io.File;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -100,6 +101,40 @@ public class HomeController {
             int countCheck = mapper.countCheck(memberId);
             session.setAttribute("countCheck", countCheck);
 
+            String DATA_DIRECTORY = "C:/Users/smhrd/Desktop/DCX_Final_Project-main/DCX_FINAL/src/main/resources/static/videos/";
+            File dir = new File(DATA_DIRECTORY);
+
+            String[] filenames = dir.list();
+            String[] filename2 = new String[filenames.length];
+
+            // Copying elements from filenames to filename2
+            for (int i = 0; i < filenames.length; i++) {
+                filename2[i] = DATA_DIRECTORY + filenames[i];
+                // System.out.println(filename2[i]);
+            }
+
+            session.setAttribute("video_storage", filename2);
+
+            for (int i = 0; i < filenames.length; i++) {
+                    filename2[i] = DATA_DIRECTORY + filenames[i];
+                    int sucornot = mapper.savevid(memberId, filename2[i].substring(101, 117), filename2[i].substring(89));
+                    System.out.println(filename2[i].substring(101, 117));
+                    System.out.println(sucornot);
+                    // System.out.println(filename2[i]);
+                    if (sucornot > 0){
+                        System.out.println("데이터베이스 업데이트 성공!");
+                    }
+
+            }
+
+            List<Storage> result_storage = mapper.videoList(memberId);
+            if(result_storage == null) { // Uesr에 입력한 회원 정보가 없어 로그인에 실패
+                System.out.println("데이터 베이스 불러오기 실패");
+            }
+            // System.out.println(result_storage);
+            session.setAttribute("result_storage", result_storage);
+            // return "loading_main";
+                
             return "main";
         }
 
@@ -373,4 +408,4 @@ public class HomeController {
         return "redirect:../videos/{videoFileName}";
     }
 
-}
+}   
