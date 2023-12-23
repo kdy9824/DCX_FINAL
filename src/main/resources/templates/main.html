@@ -4,14 +4,12 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE-edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>PINY</title>
     <!-- MATERIAL CON -->
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet"/>
     <!-- STYLESHEET -->
     <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@24,400,0,0" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
@@ -36,26 +34,18 @@
                     <span class="material-icons-sharp">person_outline</span>
                     <h3>My page</h3>
                 </a>
-                <a class="menu-item"  href="/video">
+                <a class="menu-item" href="/video">
                     <span class="material-icons-sharp">videocam</span>
                     <h3>Video Streaming</h3>
                 </a>
-                <a class="menu-item"  href="/storage">
+                <a class="menu-item" href="/storage">
                     <span class="material-icons-sharp">view_list</span>
                     <h3>Video List</h3>
                     <span class="message-count active" th:text="${session.countCheck}"></span>
                 </a>
-                <a class="menu-item">
-                    <span class="material-icons-sharp">mail_outline</span>
-                    <h3>Messages</h3>
-                </a>
-                <a class="menu-item">
-                    <span class="material-icons-sharp">insights</span>
-                    <h3>Analytics</h3>
-                </a>
-                <a class="menu-item" href="/chat">
-                  <span class="material-icons-sharp">chat</span>
-                  <h3>chat</h3>
+                <a class="menu-item" href="/map">
+                    <span class="material-icons-sharp">public</span>
+                    <h3>No Smoking Map</h3>
                 </a>
                 <a href="/logout">
                     <span class="material-icons-sharp">logout</span>
@@ -111,21 +101,23 @@
                         <tr>
                             <th>기록 번호</th>
                             <th>감지 일시</th>
-                            <!-- <th>확인 여부</th> -->
+                            <th>확인 여부</th>
+                            <th>비디오 재생</th>
                         </tr>
                     </thead>
                     <tbody>
-                    	<tr th:each="s : ${session.result_storage}">
+                    	<tr th:each="s : ${session.result_storage2}">
                             <td th:text="${s.idx}">Index</td>
                             <td th:text="${s.record_start}">Record Start</td>
-                            <!-- <td class="primary"><span class="material-icons-sharp">check_circle_outline</span></td> -->
+                            <td th:if="${s.confirmed == 0}" class="primary"><i class="fa-sharp fa-solid fa-circle-xmark"></i><span th:text ="${s.confirmed}" style="display: none;">storage.confirmed</span></td>
+                            <td th:if="${s.confirmed == 1}"><i class="fa-solid fa-circle-check" style="color: #00ff7b;"></i></td>
+                            <td th:text = "${s.video_path}" style="display: none;">storage.video_path</td>
+                            <td><a th:href="'storage/' + ${s.video_path}">Play Video</a></td>
                         </tr>
                         
                     </tbody>
                 </table>
-                <a href="#">Show All</a>
-				
-				<button id="sendEmailButton">이메일 전송</button>
+                <a href="/storage">Show All</a>
                 
             </div>
         </main>
@@ -232,7 +224,7 @@
                 </div>
             </div>
         </div>
-
+    <script src="https://kit.fontawesome.com/f3aa567758.js" crossorigin="anonymous"></script>
     <script src="../js/main.js"></script>
     <script>
       $(document).ready(function () {

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE-edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Storage</title>
+    <title>PINY</title>
     <!-- MATERIAL CON -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     <!-- STYLESHEET -->
@@ -16,8 +16,8 @@
         <aside>
             <div class="top">
                 <div class="logo">
-                    <a href="/main"><img src="../images/logo.png">
-                    <h2>PINY<span class="danger"> Catch U</span></h2></a>
+                    <img src="../images/logo.png">
+                    <h2>PINY<span class="danger"> Catch U</span></h2>
                 </div>
                 <div class="close" id="close-btn">
                     <span class="material-icons-sharp">close</span>
@@ -25,30 +25,26 @@
             </div>
             <!-- ------------ sidebar ------------ -->
             <div class="sidebar">
-                <a class="menu-item active" href="/main">
+                <a class="menu-item" href="/main">
                     <span class="material-icons-sharp">grid_view</span>
                     <h3>Dashboard</h3>
                 </a>
-                <a class="menu-item" href="/mypage">
+                <a class="menu-item active" href="/mypage">
                     <span class="material-icons-sharp">person_outline</span>
                     <h3>My page</h3>
                 </a>
-                <a class="menu-item"  href="/video">
+                <a class="menu-item" href="/video">
                     <span class="material-icons-sharp">videocam</span>
                     <h3>Video Streaming</h3>
                 </a>
-                <a class="menu-item"  href="/storage">
+                <a class="menu-item" href="/storage">
                     <span class="material-icons-sharp">view_list</span>
                     <h3>Video List</h3>
-                    <span class="message-count active">26</span>
+                    <span class="message-count active" th:text="${session.countCheck}"></span>
                 </a>
-                <a class="menu-item">
-                    <span class="material-icons-sharp">insights</span>
-                    <h3>Analytics</h3>
-                </a>
-                <a class="menu-item" href="/chat">
-                  <span class="material-icons-sharp">chat</span>
-                  <h3>chat</h3>
+                <a class="menu-item" href="/map">
+                    <span class="material-icons-sharp">public</span>
+                    <h3>No Smoking Map</h3>
                 </a>
                 <a href="/logout">
                     <span class="material-icons-sharp">logout</span>
@@ -83,6 +79,24 @@
             </div>
             <!-- ------------ main ------------ -->
             <div class="imformation-update">
+
+                <form action="/withdraw" method="POST">
+                    <div class="tab-box">
+                        <button type="button" class="tab active">회원정보 수정하기</button>
+                        <button type="button" class="tab" id="openModal">계정 삭제하기</button>
+                        <div class="modal">
+                            <div class="modal-content">
+                                <span id="closeModal" class="close">&times;</span>
+                                <h2 class="primary">정말로 탈퇴하시겠습니까?</h2>
+                                <strong>탈퇴 전 확인하세요</strong><br>
+                                <p>탈퇴하시면 해당 계정은 삭제되며,<br>모든 데이터는 복구가 불가능합니다.</p>
+                                <input type="checkbox" id="check"><strong>안내사항을 모두 확인하였으며 이에 동의합니다.</strong><br>
+                                <button type="submit" class="deleteBtn disabledButton1" id="deleteBtn" disabled>계정 삭제하기</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
                 <h2 class="primary">회원정보 수정</h2>
                 <p>기본정보</p>
                 <form action="/update" method="POST">
@@ -109,7 +123,6 @@
                 </table>
                 <div class="btn">
                     <button type="submit" id="register">회원정보 수정</button>
-                    <button type="reset">이건 뺍시다</button>
                 </div>
                 </form>
                 
@@ -121,7 +134,7 @@
             
      </div>
 
-     <script src="../js/main.js"></script>
+     <script src="../js/mypage.js"></script>
      <script>
       document.getElementById("register").disabled = true;
       document.getElementById("register").classList.add("disabledButton1");
@@ -188,4 +201,3 @@
   </script>
 </body>
 </html>
-<!-- 수현 -->\

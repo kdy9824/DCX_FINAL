@@ -1,7 +1,7 @@
 package com.example.demo.Controller;
 // d
 import java.io.File;
-
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -80,6 +80,7 @@ public class HomeController {
             System.out.println("로그인 실패");
             return "redirect:/"; // 로그인 페이지로 다시 이동
         } else {
+            
             session.setAttribute("loginMember", result); // 세션에 로그인한 계정의 정보를 저장, 해당 정보는 session.invalidate()나 브라우저를 종료하기
                                                          // 전까지 유효함
             Member loginMember = (Member) session.getAttribute("loginMember");
@@ -128,13 +129,14 @@ public class HomeController {
             }
 
             List<Storage> result_storage = mapper.videoList(memberId);
+            List<Storage> result_storage2 = mapper.videoListtwo(memberId);
             if(result_storage == null) { // Uesr에 입력한 회원 정보가 없어 로그인에 실패
                 System.out.println("데이터 베이스 불러오기 실패");
             }
-            // System.out.println(result_storage);
+            
             session.setAttribute("result_storage", result_storage);
-            // return "loading_main";
-                
+            session.setAttribute("result_storage2", result_storage2);
+
             return "main";
         }
 
@@ -189,7 +191,7 @@ public class HomeController {
 
         System.out.println(update);
 
-        return "mypage";
+        return "main";
 
     }
 
@@ -297,20 +299,6 @@ public class HomeController {
         return ResponseEntity.ok(countSmoke+' '+countChechCalendar);
     }
 
-    // @PostMapping("/calendarchange")
-    // public String calendarChange(HttpSession session,
-    //         @RequestParam("checkdate") String checkdate) {
-    //     Member member = (Member)session.getAttribute("loginMember");
-    //     String memberId = member.getId();
-    //     System.out.println(checkdate);
-    //     String checkdate1 = checkdate+" 00:00:00";
-    //     String checkdate2 = checkdate+" 23:59:59";
-    //     mapper.countSmoke(checkdate1, checkdate2, memberId);
-    //     mapper.countCheckCalendar(memberId, checkdate1, checkdate2);
-        
-    //     return "main";
-    // }
-
     @GetMapping(value = "/storage")
     public String storage(HttpSession session, Member member) {
 
@@ -318,6 +306,9 @@ public class HomeController {
         if (member != null) {
 
             String memberId = member.getId(); // 로그인한 사용자의 Id를 memberId에 할당
+
+            int countCheck = mapper.countCheck(memberId);
+            session.setAttribute("countCheck", countCheck);
 
             String DATA_DIRECTORY = "C:/Users/smhrd/Desktop/DCX_Final_Project-main/DCX_FINAL/src/main/resources/static/videos/";
             File dir = new File(DATA_DIRECTORY);
@@ -359,6 +350,21 @@ public class HomeController {
         }
     }
 
+    @RequestMapping("/search") 
+	public String m1(@RequestParam(value = "item_name", required = false) String no, Member member, HttpSession session) throws IOException {
+
+        Member loginMember = (Member) session.getAttribute("loginMember");
+            String memberId = loginMember.getId(); // 로그인한 사용자의 Id를 memberId에 할당
+		System.out.println(no);
+		List<Storage> list = mapper.searching(memberId, no);
+		System.out.println(list);
+
+		
+
+		session.setAttribute("search_value", list);
+		return "search";
+	}
+
     @GetMapping(value = "/loading")
     public String loading(Model model) {
 
@@ -370,6 +376,14 @@ public class HomeController {
 
         member = (Member) session.getAttribute("loginMember");
         if (member != null) {
+
+            String memberId = member.getId(); // 로그인한 사용자의 Id를 memberId에 할당
+
+            LocalDate today = LocalDate.now();
+        
+            int countCheck = mapper.countCheck(memberId);
+            session.setAttribute("countCheck", countCheck);
+
             return "mypage";
         } else {
             return "redirect:/";
@@ -392,6 +406,11 @@ public class HomeController {
 
         member = (Member) session.getAttribute("loginMember");
         if (member != null) {
+            String memberId = member.getId(); // 로그인한 사용자의 Id를 memberId에 할당
+
+            int countCheck = mapper.countCheck(memberId);
+            session.setAttribute("countCheck", countCheck);
+
             System.out.println(member.getEmail());
             System.out.println("/video에서는 null이 아님");
             return "streaming";
@@ -408,4 +427,16 @@ public class HomeController {
         return "redirect:../videos/{videoFileName}";
     }
 
-}   
+    @GetMapping(value = "/map")
+    public String analytics(HttpSession session, Member member) {
+
+        member = (Member) session.getAttribute("loginMember");
+        String memberId = member.getId(); // 로그인한 사용자의 Id를 memberId에 할당
+
+        int countCheck = mapper.countCheck(memberId);
+        session.setAttribute("countCheck", countCheck);
+
+        return "map";
+    }
+
+}

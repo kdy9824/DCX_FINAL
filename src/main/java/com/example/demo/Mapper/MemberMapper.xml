@@ -11,6 +11,19 @@
 
 	<select id="videoList" parameterType="String" resultType="com.example.demo.Entity.Storage">select * from Storage where ID = (select ID from User where ID=#{memberId}) ORDER BY confirmed ASC, RECORD_START DESC</select>
 
+	<select id="videoListtwo" parameterType="String" resultType="com.example.demo.Entity.Storage">select * from Storage where ID = (select ID from User where ID=#{memberId}) ORDER BY RECORD_START DESC LIMIT 5</select>
+
+	<select id="searching" parameterType="String" resultType="com.example.demo.Entity.Storage">
+		<![CDATA[
+			SELECT *
+			FROM Storage
+			WHERE ID = (SELECT ID FROM User WHERE ID=#{memberId})
+			AND record_start >= CAST(#{item_name} AS DATE)
+			AND record_start < CAST(#{item_name} AS DATE) + INTERVAL 1 DAY
+			ORDER BY RECORD_START DESC
+		]]>
+	</select>
+
 	<insert id="savevid" parameterType="String">INSERT INTO Storage(id, record_start, video_path)
 		SELECT #{id}, #{record_start}, #{video_path}
 		FROM dual

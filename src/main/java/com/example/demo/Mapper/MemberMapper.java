@@ -16,6 +16,10 @@ public interface MemberMapper {
 	
 	public List<Storage> videoList(String memberId);
 
+	public List<Storage> videoListtwo(String memberId);
+
+	public List<Storage> searching(String memberId, String item_name);
+
 	public int idCheck(String id);
 
 	public int savevid(String id, String record_start, String video_path);
