@@ -106,7 +106,7 @@ import requests
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-model = YOLO("C:/Users/smhrd/Desktop/DCX_Final_Project-main/DCX_FINAL/model/second_try.pt")
+model = YOLO("C:/Users/korea/OneDrive/바탕 화면/DCX_Final_Project-main/DCX_FINAL/model/second_try.pt")
 formatted_filename = datetime.now().strftime("%Y-%m-%d_%H-%M")
 # Set detailed values for video recording
 fps = 30
@@ -196,14 +196,14 @@ def gen():
 
             # 프레임 단위로 이미지 저장
             
-            image_filename = f'C:/Users/smhrd/Desktop/DCX_Final_Project-main/DCX_FINAL/src/main/resources/static/saved_images/frame_1.jpg'
+            image_filename = f'C:/Users/korea/OneDrive/바탕 화면/DCX_Final_Project-main/DCX_FINAL/src/main/resources/static/saved_images/frame_1.jpg'
             cv2.imwrite(image_filename,frame)
 
             if not record:
                 record = True
                 record_start_time = time.time()
                 print(f"Start recording_{cnt_rec}th")
-                out = cv2.VideoWriter(f'C:/Users/smhrd/Desktop/DCX_Final_Project-main/DCX_FINAL/src/main/resources/static/videos/record_file_{formatted_filename}_{cnt_rec}.mp4', codec, fps, (w, h))
+                out = cv2.VideoWriter(f'C:/Users/korea/OneDrive/바탕 화면/DCX_Final_Project-main/DCX_FINAL/src/main/resources/static/videos/record_file_{formatted_filename}_{cnt_rec}.mp4', codec, fps, (w, h))
                 cnt_rec += 1
 
             # 이벤트 감지 후 실행할 함수

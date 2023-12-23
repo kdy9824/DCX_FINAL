@@ -1,11 +1,11 @@
 package com.example.demo.Controller;
 // d
 import java.io.File;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -24,13 +24,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demo.Entity.Member;
 import com.example.demo.Entity.Storage;
 import com.example.demo.Mapper.MemberMapper;
-import com.example.demo.java.GoogleEmailService;
 import com.example.demo.java.GoogleAuthenticationService;
+import com.example.demo.java.GoogleEmailService;
 import com.example.demo.java.NaverAuthenticationService;
 import com.example.demo.java.NaverEmailService;
 
 import jakarta.servlet.http.HttpSession;
-import java.util.Random;
 
 // 동엽 1차
 
@@ -101,7 +100,9 @@ public class HomeController {
             int countCheck = mapper.countCheck(memberId);
             session.setAttribute("countCheck", countCheck);
 
-            String DATA_DIRECTORY = "C:/Users/smhrd/Desktop/DCX_Final_Project-main/DCX_FINAL/src/main/resources/static/videos/";
+            String DATA_DIRECTORY = "C:/Users/korea/OneDrive/바탕 화면/DCX_Final_Project-main/DCX_FINAL/src/main/resources/static/videos/";
+            //"C:\Users\smhrd\desktop
+            //"C:\Users\korea\OneDrive\바탕 화면\DCX_Final_Project-main"
             File dir = new File(DATA_DIRECTORY);
 
             String[] filenames = dir.list();
@@ -117,8 +118,8 @@ public class HomeController {
 
             for (int i = 0; i < filenames.length; i++) {
                     filename2[i] = DATA_DIRECTORY + filenames[i];
-                    int sucornot = mapper.savevid(memberId, filename2[i].substring(101, 117), filename2[i].substring(89));
-                    System.out.println(filename2[i].substring(101, 117));
+                    int sucornot = mapper.savevid(memberId, filename2[i].substring(108, 124), filename2[i].substring(97));
+                    System.out.println(filename2[i].substring(108, 124));
                     System.out.println(sucornot);
                     // System.out.println(filename2[i]);
                     if (sucornot > 0){
