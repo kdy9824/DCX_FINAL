@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demo.Entity.Member;
 import com.example.demo.Entity.Response;
 import com.example.demo.Entity.Storage;
-import com.example.demo.Mapper.MemberMapper;
+import com.example.demo.Mapper.MapperP;
 import com.example.demo.java.GoogleEmailService;
 import com.example.demo.java.GoogleAuthenticationService;
 import com.example.demo.java.NaverAuthenticationService;
@@ -36,10 +36,10 @@ import java.util.Random;
 // 동엽 1차
 
 @Controller
-public class HomeController {
+public class ControllerP {
 
     @Autowired
-    MemberMapper mapper;
+    MapperP mapper;
 
     @GetMapping("/")
     public String intro() {

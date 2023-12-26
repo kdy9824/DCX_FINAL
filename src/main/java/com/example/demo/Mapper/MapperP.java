@@ -8,7 +8,7 @@ import com.example.demo.Entity.Member;
 import com.example.demo.Entity.Storage;
 
 @Mapper
-public interface MemberMapper {
+public interface MapperP {
 	
 	public int join(Member member);
 	

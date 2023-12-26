@@ -45,7 +45,7 @@
                 </a>
                 <a class="menu-item" href="/map">
                     <span class="material-icons-sharp">public</span>
-                    <h3>No Smoking Map</h3>
+                    <h3>Smoking Place</h3>
                 </a>
                 <a href="/logout">
                     <span class="material-icons-sharp">logout</span>
@@ -56,10 +56,6 @@
         <!-- ------------ END OF ASIDE ------------ -->
         <main>
             <h1>Dashboard</h1>
-
-            <div class="date">
-                <input type="date">
-            </div>
 
             <div class="insights">
                 <div class="sales">
@@ -143,54 +139,23 @@
             </div>
             <!-- END OF TOP -->
             <div class="recent-updates">
-                <iframe src="https://www.google.co.kr/maps/d/embed?mid=1yzdWIFxpGE6zvCh1JwHksyw-vE1saxo&amp;ehbc=2E312F" width="300" height="300"></iframe>
-                <!-- <h2>Recent Updates</h2>
-                <div class="updates">
-                    <div class="update">
-                        <div class="profile-photo">
-                            <img src="../images/profile1.png">
-                        </div>
-                        <div class="message">
-                            <p><b>김동엽</b> 오늘자 현황 보고 부탁드려요</p>
-                            <small class="text-muted">2 Minute Ago</small>
-                        </div>
+                <div class="chat-container">
+                    <div class="chat-header">Chat Room</div>
+                    <div class="chat-body" id="chatBody">
+                      <!-- Messages will be appended here dynamically using JavaScript -->
                     </div>
-                    <div class="update">
-                        <div class="profile-photo">
-                            <img src="../images/profile1.png">
-                        </div>
-                        <div class="message">
-                            <p><b>김도훈</b> 적발건 업데이트 되었습니다. 이메일로 자료 보냈습니다.</p>
-                            <small class="text-muted">10 Minute Ago</small>
-                        </div>
+                    <div class="input-container">
+                      <input
+                        type="text"
+                        class="input-box"
+                        id="messageInput"
+                        placeholder="Type your message..."
+                      />
+                      <button class="send-button" onclick="sendMessage()">Send</button>
                     </div>
-                    <div class="update">
-                        <div class="profile-photo">
-                            <img src="../images/profile1.png">
-                        </div>
-                        <div class="message">
-                            <p><b>안상우</b> 이수역 1번 출구 앞 금연구역에서 흡연 적발되었습니다. 처리 부탁드려요~</p>
-                            <small class="text-muted">15 Minute Ago</small>
-                        </div>
-                    </div>
-                </div> -->
+                  </div>
+                <!-- <iframe src="https://www.google.co.kr/maps/d/embed?mid=1yzdWIFxpGE6zvCh1JwHksyw-vE1saxo&amp;ehbc=2E312F" width="300" height="300"></iframe> -->
             </div>
-            <!-- <table class="scriptCalendar">
-                <thead>
-                    <tr>
-                        <td class="calendarBtn" id="btnPrevCalendar">&#60;&#60;</td>
-                        <td colspan="5">
-                            <span id="calYear">YYYY</span>년
-                            <span id="calMonth">MM</span>월
-                        </td>
-                        <td class="calendarBtn" id="nextNextCalendar">&#62;&#62;</td>
-                    </tr>
-                    <tr>
-                        <td>일</td><td>월</td><td>화</td><td>수</td><td>목</td><td>금</td><td>토</td>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table> -->
             <div class="calendar-container">
                 <div class="calendar">
                     <div class="calendar-header">

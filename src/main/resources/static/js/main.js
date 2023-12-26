@@ -88,7 +88,7 @@ themetoggler.addEventListener('click', () => {
           <td>${storage.record_start}</td>
           <td>
               ${storage.confirmed == 0 ? 
-                  `<i class="fa-sharp fa-solid fa-circle-xmark"></i>` : 
+                  `<i class="fa-sharp fa-solid fa-circle-xmark" style="color: #"></i>` : 
                   `<i class="fa-solid fa-circle-check" style="color: #00ff7b;"></i>`
               }
               <span style="display: none;">${storage.confirmed}</span>
