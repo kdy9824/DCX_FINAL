@@ -91,6 +91,8 @@ def gen():
                 print(f"Start recording_{cnt_rec}th")
                 start_recording()
 
+            send_email(image_filename,formatted_filename)
+
         if record:
             writer.append_data(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
 

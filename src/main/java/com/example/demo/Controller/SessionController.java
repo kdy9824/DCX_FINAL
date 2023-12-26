@@ -3,15 +3,20 @@ package com.example.demo.Controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Entity.Member;
+import com.example.demo.Mapper.MapperP;
 
 import jakarta.servlet.http.HttpSession;
 
 @RestController
 public class SessionController {
+
+    @Autowired
+    MapperP mapper;
 
     @GetMapping("/session-data")
     public Map<String, String> getSessionData(HttpSession session) {
@@ -27,8 +32,11 @@ public class SessionController {
         }
 
         // 세션에서 로그인 정보 가져오기
-        // sessionData.put("email", member.getEmail());
-        sessionData.put("email", "dyk2098@naver.com");
+        
+        String email = mapper.loginUserEmail();
+        System.out.println(email);
+
+        sessionData.put("email", email);
 
         return sessionData;
     }

@@ -146,8 +146,10 @@ aside .top {
     margin-top: 1.4rem;
 }
 
-aside .logo {
+aside .logo a {
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 0.8rem;
 }
 
@@ -484,7 +486,77 @@ main .recent-video a {
     color: var(--color-primary);
 }
 
-/* ===================== MEDIA QUERIES ===================== 
+/* logo 종 움직임 */
+.box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(to bottom,#9796f0 0%,#ff686b 100%);
+    padding: 10px;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .bellWrapper {
+    font-size: 20px;
+    color: var(--color-white);
+  }
+  
+  .my-bell {
+    transform-origin: top;
+    animation: bell 2s infinite linear;
+  }
+  
+  @keyframes bell{
+    0%, 50%{
+          transform: rotate(0deg);
+      }
+    5%, 15%, 25%, 35%, 45% {
+      transform: rotate(13deg);
+    }
+    10%, 20%, 30%, 40% {
+      transform: rotate(-13deg);
+    }
+  }
+  
+  .circle {
+     width: 100px;
+        height: 80px;
+    position: absolute;
+    border: 2px solid white;
+    border-radius: 70%;
+    border-color: transparent white;
+    animation: ring 2s infinite linear both;
+  }
+  
+  .second {
+    animation-delay: .3s;
+  }
+  
+  .third {
+    animation-delay: .7s;
+  }
+  
+  @keyframes ring{
+    0%, 100% {
+      opacity: 0; 
+    }
+    
+    1% {
+      opacity: 1;
+    }
+    
+    50% {
+      width: 250px;
+      height: 250px;
+      opacity: 0;
+    }
+  
+  }
+
+  
+/* ===================== MEDIA QUERIES ===================== */
 @media screen and (max-width: 1200px) {
     .container {
        width: 94%;
@@ -513,7 +585,7 @@ main .recent-video a {
         gap: 0;
     }
 
-    main .recent-order {
+    main .recent-video {
         width: 94%;
         position: absolute;
         left: 50%;
@@ -521,7 +593,7 @@ main .recent-video a {
         margin: 2rem 0 0 8.8rem;
     }
 
-    main .recent-order table { 
+    main .recent-video table { 
         width: 83vw;
     }
 
@@ -534,9 +606,10 @@ main .recent-video a {
     main table body td th:first-child {
         display: none;
     }
+
 }
-*/
-/* ===================== MEDIA QUERIES ===================== 
+
+/* ===================== MEDIA QUERIES ===================== */
 @media screen and (max-width: 768px) {
     .container {
        width: 100%;
@@ -594,13 +667,13 @@ main .recent-video a {
         padding: 0 1rem;
     }
 
-    main .recent-order {
+    main .recent-video {
         position: relative;
         margin: 3rem 0 0 0;
         width: 100%;
     }
 
-    main .recent-order table {
+    main .recent-video table {
         width: 100%;
         margin: 0;
     }
@@ -641,6 +714,13 @@ main .recent-video a {
         font-size: 2rem;
     }
 
-}
-*/
+    .calendar-days div {
+        left: 25px;
+    }
 
+    .yellow-bg{
+        background-color: yellow;
+    }
+  
+
+}

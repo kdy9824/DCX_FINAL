@@ -42,7 +42,7 @@ public class GoogleEmailService {
             MimeBodyPart imagePart = new MimeBodyPart();
             DataSource imageSource = new FileDataSource(imagePath);
             imagePart.setDataHandler(new DataHandler(imageSource));
-            imagePart.setFileName("test.png");
+            imagePart.setFileName(content+".png");
 
             // 이미지를 첨부하여 메시지 생성
             Multipart multipart = new MimeMultipart();

@@ -11,16 +11,24 @@ import com.example.demo.Entity.Storage;
 public interface MapperP {
 	
 	public int join(Member member);
+
+	public int loginUser(String id, String email);
+
+	public int logoutUser(String id);
+
+	public int loginCheck(String id);
+
+	public String loginUserEmail();
 	
 	public Member login(Member member);
 	
-	public List<Storage> videoList(String memberId);
+	public List<Storage> videoList(String id);
 
-	public List<Storage> videoListtwo(String memberId);
+	public List<Storage> videoListtwo(String id);
 
-	public List<Storage> videoListthree(String memberId, String date1, String date2);
+	public List<Storage> videoListthree(String id, String date1, String date2);
 
-	public List<Storage> searching(String memberId, String item_name);
+	public List<Storage> searching(String id, String item_name);
 
 	public int idCheck(String id);
 

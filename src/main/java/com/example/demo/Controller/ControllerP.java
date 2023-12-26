@@ -1,7 +1,6 @@
 package com.example.demo.Controller;
 // d
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -44,9 +43,15 @@ public class ControllerP {
     @GetMapping("/")
     public String intro() {
 
-        return "login";
+        return "loading_start";
 
     }
+    @GetMapping(value="/login")
+    public String login(Model model) {
+                                                                    
+        return "login";   
+                                 
+    }  
 
     @RequestMapping("/main")
     public String login(Member member, HttpSession session) {
@@ -58,7 +63,10 @@ public class ControllerP {
             Member loginMember = (Member) session.getAttribute("loginMember");
             String memberId = loginMember.getId(); // 로그인한 사용자의 Id를 memberId에 할당
             String memberEmail = loginMember.getEmail();
-            session.setAttribute("memberEmail", memberEmail);
+
+            if(mapper.loginCheck(memberId) == 0){
+                mapper.loginUser(memberId, memberEmail); // 로그인한 사용자 테이블에 추가(로그인한 사용자를 식별하기 위함)
+            }
 
             LocalDate today = LocalDate.now();
         
@@ -73,6 +81,32 @@ public class ControllerP {
 
             int countCheck = mapper.countCheck(memberId);
             session.setAttribute("countCheck", countCheck);
+
+            String DATA_DIRECTORY = "C:/Users/smhrd/Desktop/DCX_Final_Project-main/DCX_FINAL/src/main/resources/static/videos/";
+            File dir = new File(DATA_DIRECTORY);
+
+            String[] filenames = dir.list();
+            String[] filename2 = new String[filenames.length];
+
+            // Copying elements from filenames to filename2
+            for (int i = 0; i < filenames.length; i++) {
+                filename2[i] = DATA_DIRECTORY + filenames[i];
+                // System.out.println(filename2[i]);
+            }
+
+            session.setAttribute("video_storage", filename2);
+
+            for (int i = 0; i < filenames.length; i++) {
+                    filename2[i] = DATA_DIRECTORY + filenames[i];
+                    int sucornot = mapper.savevid(memberId, filename2[i].substring(101, 117), filename2[i].substring(89));
+                    System.out.println(filename2[i].substring(101, 117));
+                    System.out.println(sucornot);
+                    // System.out.println(filename2[i]);
+                    if (sucornot > 0){
+                        System.out.println("데이터베이스 업데이트 성공!");
+                    }
+
+            }
 
             List<Storage> result_storage = mapper.videoList(memberId);
             List<Storage> result_storage2 = mapper.videoListtwo(memberId);
@@ -95,6 +129,12 @@ public class ControllerP {
                                                          // 전까지 유효함
             Member loginMember = (Member) session.getAttribute("loginMember");
             String memberId = loginMember.getId(); // 로그인한 사용자의 Id를 memberId에 할당
+            String memberEmail = loginMember.getEmail();
+
+            if(mapper.loginCheck(memberId) == 0){
+                mapper.loginUser(memberId, memberEmail); // 로그인한 사용자 테이블에 추가(로그인한 사용자를 식별하기 위함)
+            }
+
             System.out.println(memberId);
             System.out.println(loginMember.getEmail().substring(loginMember.getEmail().length() - 9));
 
@@ -154,6 +194,11 @@ public class ControllerP {
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
+
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        String memberId = loginMember.getId(); // 로그인한 사용자의 Id를 memberId에 할당
+
+        mapper.logoutUser(memberId);
 
         session.invalidate(); // 세션에 저장된 정보를 날림(세션에 로그인한 계정 정보를 날림으로 로그아웃)
 
@@ -218,10 +263,6 @@ public class ControllerP {
 
     }
     
-    // @PostMapping("/sendemail")
-    // public String sendEmail(HttpSession session) {
-
-    //     Member member = (Member) session.getAttribute("loginMember");
     @PostMapping("/sendemail")
     public String sendEmail(@RequestBody Map<String, String> requestData) {
         String to = requestData.get("email");
@@ -403,8 +444,6 @@ public class ControllerP {
         if (member != null) {
 
             String memberId = member.getId(); // 로그인한 사용자의 Id를 memberId에 할당
-
-            LocalDate today = LocalDate.now();
         
             int countCheck = mapper.countCheck(memberId);
             session.setAttribute("countCheck", countCheck);
