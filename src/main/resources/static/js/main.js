@@ -73,20 +73,40 @@ themetoggler.addEventListener('click', () => {
         });
     });
 
+  function updateTableWithData(storageList) {
+    const tbody = document.getElementById('tbody');
+
+    // 기존 테이블 내용 초기화
+    tbody.innerHTML = '';
+
+    // 받은 storageList를 반복하여 테이블에 추가
+    storageList.forEach(function(storage) {
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+          <td>${storage.idx}</td>
+          <td>${storage.record_start}</td>
+          <td>
+              ${storage.confirmed == 0 ? 
+                  `<i class="fa-sharp fa-solid fa-circle-xmark"></i>` : 
+                  `<i class="fa-solid fa-circle-check" style="color: #00ff7b;"></i>`
+              }
+              <span style="display: none;">${storage.confirmed}</span>
+          </td>
+          <td style="display: none;">${storage.video_path}</td>
+          <td><a href="storage/${storage.video_path}">Play Video</a></td>
+        `;
+
+
+        // 테이블에 새로운 행 추가
+        tbody.appendChild(row);
+    });
+}  
+
 // Calendar
 let calendarDays = document.querySelector('.calendar-days');
 
 calendarDays.addEventListener('click', function(event) {
-    // 현재 노란색으로 변경된 요소 찾기
-    let yellowElements = document.querySelectorAll('.yellow-bg');
-
-    // 기존 노란색 요소가 있으면 원래 색상으로 변경
-    yellowElements.forEach(element => {
-        element.classList.remove('yellow-bg');
-    });
-
-    // 현재 클릭한 요소를 노란색으로 변경
-    event.target.classList.add('yellow-bg');
 
     // 클릭한 요소의 값을 콘솔에 출력
     var year = document.getElementById('year').innerText;
@@ -120,17 +140,23 @@ calendarDays.addEventListener('click', function(event) {
         type: 'POST',
         data: { checkdate: date },
         success: function(response) {
-            const responseData = response.split(' '); // 응답값을 공백으로 분리
-            const countSmoke = responseData[0] +' 건';
-            const countCheckCalendar = responseData[1] +' 건';
-    
-            const countSmokeElement = document.getElementById('countSmoke');
-            const countSmokeDayElement = document.getElementById('countSmokeDay');
-            const countCheckCalendarElement = document.getElementById('countCheck');
-    
-            countSmokeDayElement.textContent = date+' 총 적발 건수';
-            countSmokeElement.textContent = countSmoke;
-            countCheckCalendarElement.textContent = countCheckCalendar;
+          
+          let storageList = response.storageList;
+          let smokeCount = response.smokeCount;
+          let calendarCount = response.calendarCount;
+
+          const countSmoke = smokeCount +' 건';
+          const countCheckCalendar = calendarCount +' 건';
+  
+          const countSmokeElement = document.getElementById('countSmoke');
+          const countSmokeDayElement = document.getElementById('countSmokeDay');
+          const countCheckCalendarElement = document.getElementById('countCheck');
+  
+          countSmokeDayElement.textContent = date+' 총 적발 건수';
+          countSmokeElement.textContent = countSmoke;
+          countCheckCalendarElement.textContent = countCheckCalendar;
+
+          updateTableWithData(storageList);
         },
         error: function(xhr, status, error) {
             // alert('달력 로드 불가');
@@ -139,7 +165,6 @@ calendarDays.addEventListener('click', function(event) {
     
 
     });
-
 
 const isLeapYear = (year) => {
     return (

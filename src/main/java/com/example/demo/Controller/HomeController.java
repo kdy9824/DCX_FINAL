@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.Entity.Member;
+import com.example.demo.Entity.Response;
 import com.example.demo.Entity.Storage;
 import com.example.demo.Mapper.MemberMapper;
 import com.example.demo.java.GoogleEmailService;
@@ -72,6 +73,15 @@ public class HomeController {
 
             int countCheck = mapper.countCheck(memberId);
             session.setAttribute("countCheck", countCheck);
+
+            List<Storage> result_storage = mapper.videoList(memberId);
+            List<Storage> result_storage2 = mapper.videoListtwo(memberId);
+            if(result_storage == null) { // Uesr에 입력한 회원 정보가 없어 로그인에 실패
+                System.out.println("데이터 베이스 불러오기 실패");
+            }
+            
+            session.setAttribute("result_storage", result_storage);
+            session.setAttribute("result_storage2", result_storage2);
 
             return "main";
         }
@@ -285,8 +295,7 @@ public class HomeController {
     }
 
     @PostMapping("/calendarchange")
-    public ResponseEntity<String> calendarChange(HttpSession session,
-            @RequestParam("checkdate") String checkdate) {
+    public ResponseEntity<Response> calendarChange(HttpSession session, @RequestParam("checkdate") String checkdate) {
         Member member = (Member)session.getAttribute("loginMember");
         String memberId = member.getId();
         System.out.println(checkdate);
@@ -294,10 +303,41 @@ public class HomeController {
         String checkdate2 = checkdate+" 23:59:59";
         
         String countSmoke = Integer.toString(mapper.countSmoke(checkdate1, checkdate2, memberId));
-        String countChechCalendar = Integer.toString(mapper.countCheckCalendar(memberId, checkdate1, checkdate2));
+        String countCheckCalendar = Integer.toString(mapper.countCheckCalendar(memberId, checkdate1, checkdate2));
 
-        return ResponseEntity.ok(countSmoke+' '+countChechCalendar);
+        List<Storage> list = mapper.videoListthree(memberId, checkdate1, checkdate2);
+
+        Response response = new Response();
+        response.setStorageList(list);
+        response.setSmokeCount(countSmoke);
+        response.setCalendarCount(countCheckCalendar);
+
+        return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/search") 
+	public ResponseEntity<List<Storage>> m1(@RequestParam("searchdate") String searchdate, HttpSession session) {
+
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        String memberId = loginMember.getId(); // 로그인한 사용자의 Id를 memberId에 할당
+		System.out.println(searchdate);
+		List<Storage> list = mapper.searching(memberId, searchdate);
+
+		return ResponseEntity.ok(list);
+	}
+    
+    // @RequestMapping("/search") 
+	// public String m1(@RequestParam(value = "item_name", required = false) String no, Member member, HttpSession session) throws IOException {
+
+    //     Member loginMember = (Member) session.getAttribute("loginMember");
+    //         String memberId = loginMember.getId(); // 로그인한 사용자의 Id를 memberId에 할당
+	// 	System.out.println(no);
+	// 	List<Storage> list = mapper.searching(memberId, no);
+	// 	System.out.println(list);
+
+	// 	session.setAttribute("search_value", list);
+	// 	return "search";
+	// }
 
     @GetMapping(value = "/storage")
     public String storage(HttpSession session, Member member) {
@@ -349,21 +389,6 @@ public class HomeController {
             return "redirect:/";
         }
     }
-
-    @RequestMapping("/search") 
-	public String m1(@RequestParam(value = "item_name", required = false) String no, Member member, HttpSession session) throws IOException {
-
-        Member loginMember = (Member) session.getAttribute("loginMember");
-            String memberId = loginMember.getId(); // 로그인한 사용자의 Id를 memberId에 할당
-		System.out.println(no);
-		List<Storage> list = mapper.searching(memberId, no);
-		System.out.println(list);
-
-		
-
-		session.setAttribute("search_value", list);
-		return "search";
-	}
 
     @GetMapping(value = "/loading")
     public String loading(Model model) {

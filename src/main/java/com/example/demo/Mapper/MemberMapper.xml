@@ -13,6 +13,8 @@
 
 	<select id="videoListtwo" parameterType="String" resultType="com.example.demo.Entity.Storage">select * from Storage where ID = (select ID from User where ID=#{memberId}) ORDER BY RECORD_START DESC LIMIT 5</select>
 
+	<select id="videoListthree" parameterType="String" resultType="com.example.demo.Entity.Storage">select * from Storage where ID = (select ID from User where ID=#{memberId}) and RECORD_START &gt;= #{date1} AND RECORD_START &lt;= #{date2} ORDER BY RECORD_START DESC LIMIT 5</select>
+
 	<select id="searching" parameterType="String" resultType="com.example.demo.Entity.Storage">
 		<![CDATA[
 			SELECT *

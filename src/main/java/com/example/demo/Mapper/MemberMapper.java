@@ -18,6 +18,8 @@ public interface MemberMapper {
 
 	public List<Storage> videoListtwo(String memberId);
 
+	public List<Storage> videoListthree(String memberId, String date1, String date2);
+
 	public List<Storage> searching(String memberId, String item_name);
 
 	public int idCheck(String id);

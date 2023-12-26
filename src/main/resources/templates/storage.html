@@ -58,12 +58,16 @@
                 <div class="header-title">
                     <h1>Video List</h1>
                 </div>
-                <form action = "search" method="get">
+                <!-- <form action = "search" method="get">
                     <div class="search-box">
                         <button type="submit"><span class="material-icons-sharp">search</span></button>
                         <input type="text" placeholder="YYYY-MM-dd" name="item_name" autocomplete="off">
                     </div>
-                </form>
+                </form> -->
+                <div class="search-box">
+                    <button type="button" id="search"><span class="material-icons-sharp">search</span></button>
+                    <input type="text" placeholder="YYYY-MM-DD" name="item_name" id="searchdate" autocomplete="off">
+                </div>
                 <div class="user-info">
                     <button id="menu-btn">
                         <span class="material-icons-sharp">menu</span>
@@ -95,26 +99,22 @@
                             <th>비디오 재생</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tbody">
                         <tr th:each="storage : ${session.result_storage}">
                             <td th:text="${storage.idx}">storage.idx</td>
                             <td th:text="${storage.record_start}">storage.record_start</td>
                             <td th:if="${storage.confirmed == 0}" class="primary"><i class="fa-sharp fa-solid fa-circle-xmark"></i><span th:text ="${storage.confirmed}" style="display: none;">storage.confirmed</span></td>
                             <td th:if="${storage.confirmed == 1}"><i class="fa-solid fa-circle-check" style="color: #00ff7b;"></i></td>
                             <td th:text = "${storage.video_path}" style="display: none;">storage.video_path</td>
-                            <td>
-                               <a th:href="'storage/' + ${storage.video_path}">Play Video</a>
-                                
-                            </td>
+                            <td><a th:href="'storage/' + ${storage.video_path}">Play Video</a></td>
                         </tr>
                     </tbody>
                 </table>
-                <a href="#">Show All</a>
             </div>
         </main>
-     </div>
-     <script src="https://kit.fontawesome.com/f3aa567758.js" crossorigin="anonymous"></script>
+    </div>
+    <script src="https://kit.fontawesome.com/f3aa567758.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-     <script src="../js/main.js"></script>
+    <script src="../js/storage.js"></script>
 </body>
 </html>

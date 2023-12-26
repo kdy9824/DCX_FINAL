@@ -105,7 +105,7 @@
                             <th>비디오 재생</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tbody">
                     	<tr th:each="s : ${session.result_storage2}">
                             <td th:text="${s.idx}">Index</td>
                             <td th:text="${s.record_start}">Record Start</td>
@@ -114,7 +114,6 @@
                             <td th:text = "${s.video_path}" style="display: none;">storage.video_path</td>
                             <td><a th:href="'storage/' + ${s.video_path}">Play Video</a></td>
                         </tr>
-                        
                     </tbody>
                 </table>
                 <a href="/storage">Show All</a>
