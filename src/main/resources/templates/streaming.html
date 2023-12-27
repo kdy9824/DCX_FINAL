@@ -6,10 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PINY</title>
     <!-- MATERIAL CON -->
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet"/>
     <!-- STYLESHEET -->
     <link rel="stylesheet" href="../css/storage.css" />
     <!-- FONTAWESOME -->
@@ -32,13 +29,13 @@
                   <div class="circle third"></div>
               </div>
               <h2>PINY<span class="danger"> Catch U</span></h2>
-            </a>
+          </a>
           </div>
           <div class="close" id="close-btn">
             <span class="material-icons-sharp">close</span>
           </div>
         </div>
-
+        <!-- ------------ sidebar ------------ -->
         <div class="sidebar">
           <a class="menu-item" href="/main">
               <span class="material-icons-sharp">grid_view</span>
@@ -59,7 +56,7 @@
           </a>
           <a class="menu-item" href="/map">
             <span class="material-icons-sharp">public</span>
-            <h3>Smoking Place</h3>
+            <h3>No Smoking Map</h3>
         </a>
           <a href="/logout">
               <span class="material-icons-sharp">logout</span>
@@ -69,12 +66,11 @@
       </aside>
       <!-- ------------ MAIN ------------ -->
       <main>
-        <!-- ------------ header ------------ -->
         <div class="header-wrapper">
           <div class="header-title">
             <h1>Video Streaming</h1>
           </div>
-          <div class="user-info">
+          <div class="top">
             <button id="menu-btn">
               <span class="material-icons-sharp">menu</span>
             </button>
@@ -102,7 +98,7 @@
                 <div class="video-item">
                   <img
                     id="video-feed"
-                    src="http://172.30.1.88:5000/python4"
+                    src="http://172.30.1.88:5000/python5"
                     alt="CCTV1"
                   />
                   <!-- <button onclick="startStreamingButton()">Start Streaming</button>
@@ -116,7 +112,7 @@
                 <div class="video-item">
                   <img
                     id="video-feed2"
-                    src="http://172.30.1.18:5000/python3"
+                    src="http://172.30.1.18:5000/python5"
                     alt="CCTV2"
                   />
                   <!-- <video id="videoInput2" style="display: none"></video>
@@ -137,7 +133,7 @@
               </div>
               <div class="video">
                 <div class="video-item">
-                  <img id="video-feed4" src="http://localhost:5000/python4" alt="CCTV4"/>
+                  <img id="video-feed4" src="http://localhost:5000/python5" alt="CCTV4"/>
                   <video id="videoInput4" style="display: none"></video>
                   <canvas id="videoOutput4"></canvas>
                 </div>
@@ -146,7 +142,7 @@
 
           </div>
 
-          <div class="camara-container">
+          <div class="camera-container">
             <h2>탐지 ON/OFF</h2>
             <div class="cameras">
               <div class="camera">
@@ -298,6 +294,6 @@
       // }
     </script>
 
-    <script src="../js/main.js"></script>
+    <script src="../js/storage.js"></script>
   </body>
 </html>

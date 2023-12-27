@@ -13,12 +13,26 @@ CORS(app)  # Enable CORS for all routes
 model = YOLO("C:/Users/smhrd/Desktop/DCX_Final_Project-main/DCX_FINAL/model/second_try.pt")
 
 # Set detailed values for video recording
+# fps = 10, record_duration = 25 딱 10초
 fps = 10
 w, h = 640, 480
 record = False
 record_start_time = 0
 record_duration = 25  # seconds
 cnt_rec = 1
+email_notification_interval = 60
+
+def start_recording():
+    global writer, cnt_rec
+    filename = f'C:/Users/smhrd/Desktop/DCX_Final_Project-main/DCX_FINAL/src/main/resources/static/videos/record_file_{formatted_filename}_{cnt_rec}.mp4'
+    writer = imageio.get_writer(filename, fps=fps)
+    cnt_rec += 1
+
+def stop_recording():
+    global writer
+    if writer is not None:
+        print("Stop recording")
+        writer.close()
 
 def get_session_data():
     url = 'http://172.30.1.49:3312/session-data'  # Spring 서버의 세션 정보 API URL
@@ -52,20 +66,10 @@ def send_email(image_filename,formatted_filename):
         print(session_data)
         print('이메일 전송 실패:', e)
 
-def start_recording():
-    global writer, cnt_rec
-    filename = f'C:/Users/smhrd/Desktop/DCX_Final_Project-main/DCX_FINAL/src/main/resources/static/videos/record_file_{formatted_filename}_{cnt_rec}.mp4'
-    writer = imageio.get_writer(filename, fps=fps)
-    cnt_rec += 1
-
-def stop_recording():
-    global writer
-    if writer is not None:
-        print("Stop recording")
-        writer.close()
-
 def gen():
-    global record, record_start_time
+    global record, record_start_time, last_email_time
+    last_email_time = 0  # Initialize the last email time
+
     cap = cv2.VideoCapture(0)
 
     while True:
@@ -80,18 +84,23 @@ def gen():
         cigarette_detected = any(result.names[int(box.cls[0])] == "smoking" for result in results for box in result.boxes)
 
         if cigarette_detected:
-            print("Cigarette detected!")
+            current_time = time.time()
 
-            image_filename = f'C:/Users/smhrd/Desktop/DCX_Final_Project-main/DCX_FINAL/src/main/resources/static/saved_images/frame_1.jpg'
-            cv2.imwrite(image_filename, frame)
+            # Check if enough time has passed since the last email notification
+            if current_time - last_email_time >= email_notification_interval:
+                print("Cigarette detected!")
 
-            if not record:
-                record = True
-                record_start_time = time.time()
-                print(f"Start recording_{cnt_rec}th")
-                start_recording()
+                image_filename = 'C:/Users/smhrd/Desktop/DCX_Final_Project-main/DCX_FINAL/src/main/resources/static/saved_images/frame_1.jpg'
+                cv2.imwrite(image_filename, frame)
 
-            send_email(image_filename,formatted_filename)
+                if not record:
+                    record = True
+                    record_start_time = current_time
+                    print(f"Start recording_{cnt_rec}th")
+                    start_recording()
+
+                send_email(image_filename, formatted_filename)
+                last_email_time = current_time  # Update the last email time
 
         if record:
             writer.append_data(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
@@ -112,7 +121,7 @@ def gen():
         frame_bytes = jpeg.tobytes()
 
         # Check if recording time exceeds the specified duration
-        if record and (time.time() - record_start_time) > record_duration:
+        if record and (current_time - record_start_time) > record_duration:
             record = False
             stop_recording()
 
@@ -121,7 +130,7 @@ def gen():
 
 @app.route('/')
 def index():
-    return render_template('streaming.html')
+    return render_template('main')
 
 @app.route('/python5')
 def video_feed4():

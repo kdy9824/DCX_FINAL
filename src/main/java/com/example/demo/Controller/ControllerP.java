@@ -198,7 +198,9 @@ public class ControllerP {
         Member loginMember = (Member) session.getAttribute("loginMember");
         String memberId = loginMember.getId(); // 로그인한 사용자의 Id를 memberId에 할당
 
-        mapper.logoutUser(memberId);
+        if(mapper.loginCheck(memberId) > 0){
+                mapper.logoutUser(memberId);
+            }
 
         session.invalidate(); // 세션에 저장된 정보를 날림(세션에 로그인한 계정 정보를 날림으로 로그아웃)
 
